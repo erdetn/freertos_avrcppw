@@ -17,4 +17,5 @@ class Semaphore
     bool take();
     bool give();
     bool isCreated() const;
+    bool giveFromISR(bool *isTaskUnblocked);
 };
