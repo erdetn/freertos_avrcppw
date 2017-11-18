@@ -37,3 +37,28 @@ void Task::resume()
 {
     vTaskResume(m_taskHandler);
 }
+
+void Task::resumeFromISR()
+{
+    return (xTaskResumeFromISR(m_taskHandler) == pdTRUE);
+}
+
+unsigned char Task::priority() const
+{
+    return (unsigned uint8_t)uxTaskPriorityGet(m_taskHandler);
+}
+
+void Task::setPriority(TaskPriority taskPriority)
+{
+    vTaskPrioritySet(m_taskHandler, (UBaseType_t) taskPriority);
+}
+
+void Task::sleep(unsigned int milliseconds)
+{
+    #if INCLUDE_vTaskDelayUntil == 1
+        static TickType_t lastWakeTime_ = xTaskGetTickCount();
+        vTaskDelayUntil(&lastWakeTime_, milliseconds/portTICK_PERIOD_MS);
+    #else
+        vTaskDelay(milliseconds/portTICK_PERIOD_MS)
+    #endif
+}
