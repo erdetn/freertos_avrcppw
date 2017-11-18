@@ -30,6 +30,12 @@ public:
     void kill();
     void suspend();
     void resume();
+    void resumeFromISR();
+
+    void setPriority(TaskPriority taskPriority);
+    unsigned char priority() const;
 
     unsigned portSHORT stackDepth() const;
+
+    void sleep(unsigned int milliseconds);
 };
