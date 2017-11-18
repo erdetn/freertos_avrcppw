@@ -38,3 +38,17 @@ bool Semaphore::isCreated() const
   return m_isCreated;
 }
 
+bool Semaphore::giveFromISR(bool *isTaskUnblocked)
+{
+  portBASE_TYPE isTaskUnblocked_;
+  bool return_;
+
+  return_ = xSemaphoreGiveFromISR(m_semaphore, &isTaskUnblocked_);
+
+  if(isTaskUnblocked_ == pdTRUE)
+  {
+    *(isTaskUnblocked) = true;
+  }
+
+  return (return_ == pdTRUE);
+}
