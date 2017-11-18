@@ -49,6 +49,10 @@ bool Semaphore::giveFromISR(bool *isTaskUnblocked)
   {
     *(isTaskUnblocked) = true;
   }
+  else
+  {
+    *(isTaskUnblocked) = false;
+  }
 
   return (return_ == pdTRUE);
 }
