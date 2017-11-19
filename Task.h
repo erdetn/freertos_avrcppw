@@ -27,15 +27,32 @@ private:
 public:
     Task(const portCHAR *taskName, TaskPriority TaskPriority, unsigned portSHORT stackDepth);
     bool run(TaskFunction_t task, void *parametersToPass);
-    void kill();
-    void suspend();
-    void resume();
-    void resumeFromISR();
 
-    void setPriority(TaskPriority taskPriority);
-    unsigned char priority() const;
+    #if INCLUDE_vTaskDelete == 1
+        void kill();
+    #endif
+
+    #if INCLUDE_vTaskSuspend == 1
+        void suspend();
+        void resume();
+    #endif
+    
+    #if INCLUDE_vResumeFromISR == 1
+        void resumeFromISR();
+    #endif
+
+    #ifdef INCLUDE_vTaskPrioritySet == 1
+        void setPriority(TaskPriority taskPriority);
+    #endif
+
+    #if INCLUDE_uxTaskPriorityGet == 1
+        unsigned char priority() const;
+    #endif
 
     unsigned portSHORT stackDepth() const;
 
-    void sleep(unsigned int milliseconds);
+    #if (INCLUDE_vTaskDelayUntil == 1) || (INCLUDE_vTaskDelay == 1)
+        #define SLEEP_
+        void sleep(unsigned int milliseconds);
+    #endif
 };
