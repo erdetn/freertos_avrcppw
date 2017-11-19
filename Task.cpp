@@ -21,44 +21,56 @@ bool Task::run(TaskFunction_t task, void *parametersToPass)
     return m_isCreated;
 }
 
-void Task::kill()
-{
-    if(m_taskHandler == NULL) return;
+#if INCLUDE_vTaskDelete == 1
+    void Task::kill()
+    {
+        if(m_taskHandler == NULL) return;
 
-    vTaskDelete(m_taskHandler);
-}
+        vTaskDelete(m_taskHandler);
+    }
+#endif
 
-void Task::suspend()
-{
-    vTaskSuspend(m_taskHandler);
-}
+#if INCLUDE_vTaskSuspend == 1
+    void Task::suspend()
+    {
+        vTaskSuspend(m_taskHandler);
+    }
 
-void Task::resume()
-{
-    vTaskResume(m_taskHandler);
-}
+    void Task::resume()
+    {
+        vTaskResume(m_taskHandler);
+    }
+#endif
 
-void Task::resumeFromISR()
-{
-    return (xTaskResumeFromISR(m_taskHandler) == pdTRUE);
-}
+#if INCLUDE_vResumeFromISR == 1
+    void Task::resumeFromISR()
+    {
+        return (xTaskResumeFromISR(m_taskHandler) == pdTRUE);
+    }
+#endif
 
-unsigned char Task::priority() const
-{
-    return (unsigned uint8_t)uxTaskPriorityGet(m_taskHandler);
-}
+#if INCLUDE_uxTaskPriorityGet == 1
+    unsigned char Task::priority() const
+    {
+        return (unsigned uint8_t)uxTaskPriorityGet(m_taskHandler);
+    }
+#endif
 
-void Task::setPriority(TaskPriority taskPriority)
-{
-    vTaskPrioritySet(m_taskHandler, (UBaseType_t) taskPriority);
-}
+#ifdef INCLUDE_vTaskPrioritySet == 1
+    void Task::setPriority(TaskPriority taskPriority)
+    {
+        vTaskPrioritySet(m_taskHandler, (UBaseType_t) taskPriority);
+    }
+#endif
 
-void Task::sleep(unsigned int milliseconds)
-{
-    #if INCLUDE_vTaskDelayUntil == 1
-        static TickType_t lastWakeTime_ = xTaskGetTickCount();
-        vTaskDelayUntil(&lastWakeTime_, milliseconds/portTICK_PERIOD_MS);
-    #else
-        vTaskDelay(milliseconds/portTICK_PERIOD_MS)
-    #endif
-}
+#ifdef SLEEP_
+    void Task::sleep(unsigned int milliseconds)
+    {
+        #if INCLUDE_vTaskDelayUntil == 1
+            static TickType_t lastWakeTime_ = xTaskGetTickCount();
+            vTaskDelayUntil(&lastWakeTime_, milliseconds/portTICK_PERIOD_MS);
+        #else
+            vTaskDelay(milliseconds/portTICK_PERIOD_MS)
+        #endif
+    }
+#endif
