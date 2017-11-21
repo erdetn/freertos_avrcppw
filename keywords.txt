@@ -39,6 +39,10 @@ waitingToSendTime         KEYWORD2
 waitingToReceiveTime         KEYWORD2
 length         KEYWORD2
 unitSize         KEYWORD2
+bitMaskSize         KEYWORD2
+sync         KEYWORD2
+onEvent         KEYWORD2
+trigger         KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)
@@ -49,6 +53,7 @@ CountingSemaphore 				KEYWORD2
 Mutex 				KEYWORD2
 Task 				KEYWORD2
 Queue 				KEYWORD2
+Events 				KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
@@ -56,3 +61,5 @@ Queue 				KEYWORD2
 
 infinite_loop             LITERAL1
 TICK_PERIOD_MS            LITERAL1
+SetBit            LITERAL1
+ClearBit            LITERAL1
