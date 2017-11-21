@@ -8,14 +8,23 @@ Task::Task(const portCHAR *taskName, TaskPriority taskPriority, unsigned portSHO
 
     m_taskPriority = taskPriority;
 
-    m_stackDepth = stackDepth;
+    if(stackDepth < configMINIMAL_STACK_SIZE)
+    {
+        m_stackDepth = configMINIMAL_STACK_SIZE;
+    }
+    else
+    {
+        m_stackDepth = stackDepth;
+    }
+
     m_isCreated  = false;
 }
 
 bool Task::run(TaskFunction_t task, void *parametersToPass)
 {
-    m_isCreated == (xTaskCreate(task, (const portCHAR *const)m_taskName,
-                                m_stackDepth, parametersToPass,
+    m_isCreated = (xTaskCreate(task, (const portCHAR *const)m_taskName,
+                                m_stackDepth,
+                                parametersToPass,
                                 m_taskPriority,
                                 &m_taskHandler) == pdPASS);
     return m_isCreated;
