@@ -1,3 +1,7 @@
+/*
+ * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
+ */
+
 #include "Semaphore.h"
 
 Semaphore::Semaphore()
