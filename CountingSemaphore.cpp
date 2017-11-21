@@ -1,3 +1,7 @@
+/*
+ * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
+ */
+
 #include "CountingSemaphore.h"
 
 CountingSemaphore::CountingSemaphore(portBASE_TYPE maxCount, portBASE_TYPE initCount)
