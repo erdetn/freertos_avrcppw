@@ -1,3 +1,7 @@
+/*
+ * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
+ */
+
 #include "Queue.h"
 
 Queue::Queue(UBaseType_t length, UBaseType_t unitSize)
