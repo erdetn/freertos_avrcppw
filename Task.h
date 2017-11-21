@@ -5,9 +5,10 @@
 #ifndef TASK_H
 #define TASK_H
 
-#define infinite_loop     for(;;)
-
-#define TaskDelay(X) vTaskDelay(X/portTICK_PERIOD_MS)
+#define DEFAULT_TICKS_TO_WAIT   (500/portTICK_PERIOD_MS)  //500 [ms]
+#define TICK_PERIOD_MS          portTICK_PERIOD_MS
+#define infinite_loop           for(;;)
+#define TaskDelay(X)            vTaskDelay(X/portTICK_PERIOD_MS)
 
 #ifdef configMAX_PRIORITIES
     #ifdef configMAX_PRIORITIES == 1
