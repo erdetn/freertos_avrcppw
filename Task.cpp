@@ -1,3 +1,7 @@
+/*
+ * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
+ */
+
 #include "Task.h"
 
 Task::Task(const portCHAR *taskName, TaskPriority taskPriority, unsigned portSHORT stackDepth)
