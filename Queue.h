@@ -8,8 +8,6 @@
 #ifndef QUEUE_WH
 #define QUEUE_WH
 
-#define DEFAULT_TICKS_TO_WAIT   (500/portTICK_PERIOD_MS)  //[ms]
-
 class Queue
 {
 private:        
