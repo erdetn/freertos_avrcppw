@@ -2,16 +2,51 @@
 #include <task.h>
 #include <string.h>
 
-#define LOOP     for(;;)
+#ifndef TASK_H
+#define TASK_H
+
+#define infinite_loop     for(;;)
 
 #define TaskDelay(X) vTaskDelay(X/portTICK_PERIOD_MS)
 
+#ifdef configMAX_PRIORITIES
+    #ifdef configMAX_PRIORITIES == 1
+        #define P1 1
+        #define P2 1
+        #define P3 1
+        #define P4 1
+    #endif
+
+    #ifdef configMAX_PRIORITIES == 2
+        #define P1 1
+        #define P2 1
+        #define P3 2
+        #define P4 2
+    #endif
+
+    #ifdef configMAX_PRIORITIES == 3
+        #define P1 1
+        #define P2 2
+        #define P3 3
+        #define P4 3
+    #endif
+
+    #ifdef configMAX_PRIORITIES > 3
+        #define P1 1
+        #define P2 2
+        #define P3 3
+        #define P4 4
+    #endif
+#else
+    #error "Number of priorities not configured."
+#endif
+
 enum TaskPriority
 {
-    Zero = 0,
-    Low = 1,
-    Medium = 2,
-    High = 3
+    LowPriority    = P1,
+    MediumPriority = P2,
+    HighPriority   = P3,
+    ExtraPriority  = P4
 };
 
 class Task
@@ -56,3 +91,5 @@ public:
         void sleep(unsigned int milliseconds);
     #endif
 };
+
+#endif
