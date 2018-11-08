@@ -27,7 +27,7 @@ Thread::Thread(Task task,
         _stackDepth = stackDepth;
     }
 
-    _isCreated = false;
+    _created = false;
 }
 
 Thread::~Thread()
@@ -37,17 +37,17 @@ Thread::~Thread()
 
 bool Thread::start(void *parametersToPass)
 {
-    _isCreated = (xTaskCreate(_task, (const portCHAR *const)_threadName,
+    _created = (xTaskCreate(_task, (const portCHAR *const)_threadName,
                               _stackDepth,
                               parametersToPass,
                               _threadPriority,
                               &_threadHandler) == pdPASS);
-    return _isCreated;
+    return _created;
 }
 
 bool Thread::created() const
 {
-	return _isCreated;
+	return _created;
 }
 
 #if INCLUDE_vTaskDelete == 1
@@ -94,7 +94,7 @@ void Thread::setPriority(ThreadPriority threadPriority)
 #endif
 
 #ifdef SLEEP_
-void Thread::sleep(unsigned int milliseconds)
+static void Thread::sleep(unsigned int milliseconds)
 {
 #if INCLUDE_vTaskDelayUntil == 1
     static TickType_t lastWakeTime_ = xTaskGetTickCount();

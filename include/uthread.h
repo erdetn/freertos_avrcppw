@@ -27,7 +27,7 @@ private:
     TaskHandle_t _threadHandler;
     portCHAR *_threadName;
     ThreadPriority _threadPriority;
-    bool _isCreated;
+    bool _created;
     Task _task;
 
     unsigned portSHORT _stackDepth;
@@ -67,7 +67,7 @@ public:
 
 #if (INCLUDE_vTaskDelayUntil == 1) || (INCLUDE_vTaskDelay == 1)
 #define SLEEP_
-    void sleep(unsigned int milliseconds);
+    static void sleep(unsigned int milliseconds);
 #endif
 };
 } // namespace urtos
