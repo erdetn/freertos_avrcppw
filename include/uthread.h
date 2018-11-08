@@ -8,12 +8,12 @@
 
 #include "urtos.h"
 
-#ifndef UTASK_H
-#define UTASK_H
+#ifndef UTHREAD_H
+#define UTHREAD_H
 
 namespace urtos
 {
-enum TaskPriority : unsigned char
+enum ThreadPriority : unsigned char
 {
     LowPriority = P1,
     MediumPriority = P2,
@@ -21,23 +21,28 @@ enum TaskPriority : unsigned char
     ExtraPriority = P4
 };
 
-class Task
+class Thread
 {
 private:
-    TaskHandle_t _taskHandler;
-    portCHAR *_taskName;
-    TaskPriority _taskPriority;
+    TaskHandle_t _threadHandler;
+    portCHAR *_threadName;
+    ThreadPriority _threadPriority;
     bool _isCreated;
-	void *_function;
+    void *_task;
 
     unsigned portSHORT _stackDepth;
 
 public:
-    Task(void *function, const portCHAR *taskName, TaskPriority TaskPriority, unsigned portSHORT stackDepth);
-    bool run(void *parametersToPass);
+    Thread(void *task,
+           const portCHAR *threadName,
+           ThreadPriority threadPriority,
+           unsigned portSHORT stackDepth);
+    ~Thread();
+
+    bool start(void *parametersToPass);
 
 #if INCLUDE_vTaskDelete == 1
-    void kill();
+    void stop();
 #endif
 
 #if INCLUDE_vTaskSuspend == 1
@@ -50,7 +55,7 @@ public:
 #endif
 
 #ifdef INCLUDE_vTaskPrioritySet == 1
-    void setPriority(TaskPriority taskPriority);
+    void setPriority(ThreadPriority threadPriority);
 #endif
 
 #if INCLUDE_uxTaskPriorityGet == 1

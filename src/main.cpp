@@ -1,14 +1,14 @@
 #include <Arduino.h>
 
-#include "utask.h"
+#include "uthread.h"
 
 using namespace urtos;
 
 const int ledPin = 13;
 const int redLedPin = 12;
 
-Task *task1;
-Task *task2;
+Thread *thread1;
+Thread *thread2;
 
 static void ledTask()
 {
@@ -31,11 +31,11 @@ void setup()
     pinMode(ledPin, OUTPUT);
     pinMode(redLedPin, OUTPUT);
 
-    task1 = new Task(ledTask, "task1", TaskPriority::MediumPriority, 100);
-    task2 = new Task(redLedTask, "task2", TaskPriority::LowPriority, 100);
+    thread1 = new Thread(ledTask, "task1", ThreadPriority::MediumPriority, 100);
+    thread2 = new Thread(redLedTask, "task2", ThreadPriority::LowPriority, 100);
 
-    task1->run(NULL);
-    task2->run(NULL);
+    thread1->start(NULL);
+    thread2->start(NULL);
 }
 
 void loop()
