@@ -1,0 +1,65 @@
+#######################################
+# Syntax Coloring Map For Wire
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+TaskPriority         KEYWORD1
+LowPriority         KEYWORD1
+MediumPriority         KEYWORD1
+HighPriority         KEYWORD1
+ExtraPriority         KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+maximumCount         KEYWORD2
+initialCount         KEYWORD2
+giveFromISR         KEYWORD2
+take  KEYWORD2
+give  KEYWORD2
+isCreated         KEYWORD2
+getBlockTime  KEYWORD2
+lock         KEYWORD2
+unlock         KEYWORD2
+unlockFromISR         KEYWORD2
+TaskDelay         KEYWORD2
+kill         KEYWORD2
+run         KEYWORD2
+resumeFromISR         KEYWORD2
+setPriority         KEYWORD2
+priority         KEYWORD2
+stackDepth         KEYWORD2
+sleep         KEYWORD2
+send         KEYWORD2
+receive         KEYWORD2
+copy         KEYWORD2
+waitingToSendTime         KEYWORD2
+waitingToReceiveTime         KEYWORD2
+length         KEYWORD2
+unitSize         KEYWORD2
+bitMaskSize         KEYWORD2
+sync         KEYWORD2
+onEvent         KEYWORD2
+trigger         KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+Semaphore 				KEYWORD2
+CountingSemaphore 				KEYWORD2
+Mutex 				KEYWORD2
+Task 				KEYWORD2
+Queue 				KEYWORD2
+Events 				KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+infinite_loop             LITERAL1
+TICK_PERIOD_MS            LITERAL1
+SetBit            LITERAL1
+ClearBit            LITERAL1
