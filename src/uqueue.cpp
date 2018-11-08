@@ -4,6 +4,8 @@
 
 #include "uqueue.h"
 
+using namespace urtos;
+
 Queue::Queue(UBaseType_t length, UBaseType_t unitSize)
 {
     _waitToReceive = DEFAULT_TICKS_TO_WAIT;

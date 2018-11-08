@@ -7,14 +7,19 @@
 
 #include "urtos.h"
 
+#ifndef UMUTEX_H
+#define UMUTEX_H
+
+namespace urtos
+{
 class Mutex
 {
-  private:
-    SemaphoreHandle_t _mutex      = NULL;
-    TickType_t        _blockTime  = 0;
-    bool              _isCreated  = false;
+private:
+    SemaphoreHandle_t _mutex = NULL;
+    TickType_t _blockTime = 0;
+    bool _isCreated = false;
 
-  public:
+public:
     Mutex();
     Mutex(TickType_t blockTime);
 
@@ -25,3 +30,5 @@ class Mutex
     bool unlockFromISR(bool *isTaskUnblocked);
     bool isCreated() const;
 };
+} // namespace urtos
+#endif

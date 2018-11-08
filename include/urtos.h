@@ -41,4 +41,15 @@
 #error "Number of priorities not configured."
 #endif
 
+#define BitMask EventBits_t
+
+#if configUSE_16_BIT_TICKS == 1
+    #define BITMASK_MAP  0xFF
+#else
+    #define BITMASK_MAP  0xFFFFFF
+#endif
+
+#define SetBit(_b)      (1<_b)
+#define ClearBit(_b)   ~(1<_b)
+
 #endif

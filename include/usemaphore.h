@@ -7,14 +7,19 @@
 
 #include "urtos.h"
 
+#ifndef USEMAPHORE_H
+#define USEMAPHORE_H
+
+namespace urtos
+{
 class Semaphore
 {
-  private:
-    SemaphoreHandle_t _semaphore  = NULL;
-    TickType_t        _blockTime  = 0;
-    bool              _isCreated  = false;
+private:
+    SemaphoreHandle_t _semaphore = NULL;
+    TickType_t _blockTime = 0;
+    bool _isCreated = false;
 
-  public:
+public:
     Semaphore();
     Semaphore(TickType_t blockTime);
 
@@ -25,3 +30,6 @@ class Semaphore
     bool isCreated() const;
     bool giveFromISR(bool *isTaskUnblocked);
 };
+} // namespace urtos
+
+#endif

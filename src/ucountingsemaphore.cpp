@@ -4,6 +4,8 @@
 
 #include "ucountingsemaphore.h"
 
+using namespace urtos;
+
 CountingSemaphore::CountingSemaphore(portBASE_TYPE maxCount, portBASE_TYPE initCount)
 {
     _maxCount  = maxCount;

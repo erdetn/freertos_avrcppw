@@ -7,20 +7,11 @@
 
 #include "urtos.h"
 
-#ifndef EVENTS_H
-#define EVENTS_H
+#ifndef UEVENTS_H
+#define UEVENTS_H
 
-#define BitMask EventBits_t
-
-#ifdef configUSE_16_BIT_TICKS == 1
-    #define BITMASK_MAP  0xFF
-#else
-    #define BITMASK_MAP  0xFFFFFF
-#endif
-
-#define SetBit(_b)      (1<_b)
-#define ClearBit(_b)   ~(1<_b)
-
+namespace urtos
+{
 class Events
 {
 private:
@@ -39,5 +30,6 @@ public:
 
     unsigned char bitMaskSize() const;
 };
+}
 
 #endif

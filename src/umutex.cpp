@@ -4,6 +4,8 @@
 
 #include "umutex.h"
 
+using namespace urtos;
+
 Mutex::Mutex()
 {
   _blockTime = 0;

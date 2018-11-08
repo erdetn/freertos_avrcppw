@@ -4,6 +4,8 @@
 
 #include "usemaphore.h"
 
+using namespace urtos;
+
 Semaphore::Semaphore()
 {
   _blockTime = 0;

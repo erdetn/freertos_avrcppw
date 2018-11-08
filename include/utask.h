@@ -8,8 +8,8 @@
 
 #include "urtos.h"
 
-#ifndef TASK_H
-#define TASK_H
+#ifndef UTASK_H
+#define UTASK_H
 
 namespace urtos
 {

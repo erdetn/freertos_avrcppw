@@ -4,6 +4,8 @@
 
 #include "uevents.h"
 
+using namespace urtos;
+
 Events::Events()
 {
     _hEvents = xEventGroupCreate();
