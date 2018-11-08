@@ -13,17 +13,17 @@ Thread *thread2;
 void ledTask()
 {
     digitalWrite(ledPin, HIGH);
-    TaskDelay(500);
+	Thread::sleep(500);
     digitalWrite(ledPin, LOW);
-    TaskDelay(500);
+	Thread::sleep(500);
 }
 
 void redLedTask()
 {
     digitalWrite(redLedPin, HIGH);
-    TaskDelay(500);
+	Thread::sleep(500);
     digitalWrite(redLedPin, LOW);
-    TaskDelay(500);
+    Thread::sleep(500);
 }
 
 void setup()

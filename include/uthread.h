@@ -40,6 +40,7 @@ public:
     ~Thread();
 
     bool start(void *parametersToPass);
+	bool created() const;
 
 #if INCLUDE_vTaskDelete == 1
     void stop();

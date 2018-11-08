@@ -45,6 +45,11 @@ bool Thread::start(void *parametersToPass)
     return _isCreated;
 }
 
+bool Thread::created() const
+{
+	return _isCreated;
+}
+
 #if INCLUDE_vTaskDelete == 1
 void Thread::stop()
 {
@@ -77,7 +82,7 @@ signed char Thread::resumeFromISR()
 #if INCLUDE_uxTaskPriorityGet == 1
 unsigned char Thread::priority() const
 {
-    return (unsigned uint8_t)uxTaskPriorityGet(_threadHandler);
+    return (unsigned char)uxTaskPriorityGet(_threadHandler);
 }
 #endif
 
