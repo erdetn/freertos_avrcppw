@@ -28,12 +28,12 @@ private:
     portCHAR *_threadName;
     ThreadPriority _threadPriority;
     bool _isCreated;
-    void *_task;
+    Task _task;
 
     unsigned portSHORT _stackDepth;
 
 public:
-    Thread(void *task,
+    Thread(Task task,
            const portCHAR *threadName,
            ThreadPriority threadPriority,
            unsigned portSHORT stackDepth);
@@ -51,10 +51,10 @@ public:
 #endif
 
 #if INCLUDE_vResumeFromISR == 1
-    void resumeFromISR();
+    signed char resumeFromISR();
 #endif
 
-#ifdef INCLUDE_vTaskPrioritySet == 1
+#if INCLUDE_vTaskPrioritySet == 1
     void setPriority(ThreadPriority threadPriority);
 #endif
 

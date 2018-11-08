@@ -9,6 +9,8 @@
 #define infinite for (;;)
 #define TaskDelay(X) vTaskDelay(X / portTICK_PERIOD_MS)
 
+#define Task TaskFunction_t
+
 #ifdef configMAX_PRIORITIES
 #if configMAX_PRIORITIES == 1
 #define P1 1

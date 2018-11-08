@@ -6,7 +6,7 @@
 
 using namespace urtos;
 
-Thread::Thread(void *task,
+Thread::Thread(Task task,
              const portCHAR *threadName,
              ThreadPriority threadPriority,
              unsigned portSHORT stackDepth)
@@ -68,7 +68,7 @@ void Thread::resume()
 #endif
 
 #if INCLUDE_vResumeFromISR == 1
-void Thread::resumeFromISR()
+signed char Thread::resumeFromISR()
 {
     return (xTaskResumeFromISR(_threadHandler) == pdTRUE);
 }
@@ -81,7 +81,7 @@ unsigned char Thread::priority() const
 }
 #endif
 
-#ifdef INCLUDE_vTaskPrioritySet == 1
+#if INCLUDE_vTaskPrioritySet == 1
 void Thread::setPriority(ThreadPriority threadPriority)
 {
     vTaskPrioritySet(_threadHandler, (UBaseType_t)threadPriority);
