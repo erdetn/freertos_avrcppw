@@ -29,18 +29,19 @@ private:
     ThreadPriority _threadPriority;
     bool _created;
     Task _task;
-
     unsigned portSHORT _stackDepth;
 
 public:
+	Thread();
     Thread(Task task,
            const portCHAR *threadName,
            ThreadPriority threadPriority,
            unsigned portSHORT stackDepth);
+    Thread(const Thread &thread);
     ~Thread();
 
     bool start(void *parametersToPass);
-	bool created() const;
+    bool created() const;
 
 #if INCLUDE_vTaskDelete == 1
     void stop();

@@ -6,6 +6,16 @@
 
 using namespace urtos;
 
+Thread::Thread()
+{
+	_created = false;
+	_task = NULL;
+	_stackDepth = 0;
+	_threadPriority = ThreadPriority::MediumPriority;
+	_threadName = NULL;
+	_threadHandler = NULL;
+}
+
 Thread::Thread(Task task,
              const portCHAR *threadName,
              ThreadPriority threadPriority,
@@ -28,6 +38,16 @@ Thread::Thread(Task task,
     }
 
     _created = false;
+}
+
+Thread::Thread(const Thread &thread)
+{
+	_threadHandler = thread._threadHandler;
+	_threadName = thread._threadName;
+    _threadPriority = thread._threadPriority;
+    _created = thread._created;
+    _task = thread._task;
+    _stackDepth = thread._stackDepth;
 }
 
 Thread::~Thread()
