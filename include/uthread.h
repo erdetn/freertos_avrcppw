@@ -11,6 +11,8 @@
 #ifndef UTHREAD_H
 #define UTHREAD_H
 
+#define THREAD_NAMING DISABLE
+
 namespace urtos
 {
 enum ThreadPriority : unsigned char
@@ -25,18 +27,28 @@ class Thread
 {
 private:
     TaskHandle_t _threadHandler;
-    portCHAR *_threadName;
     ThreadPriority _threadPriority;
     bool _created;
     Task _task;
     unsigned portSHORT _stackDepth;
 
+#if THREAD_NAMING == ENABLE
+    portCHAR *_threadName;
+#endif
+
 public:
-	Thread();
+    Thread();
+#if THREAD_NAMING == ENABLE
     Thread(Task task,
            const portCHAR *threadName,
            ThreadPriority threadPriority,
            unsigned portSHORT stackDepth);
+#else
+    Thread(Task task,
+           ThreadPriority threadPriority,
+           unsigned portSHORT stackDepth);
+#endif
+
     Thread(const Thread &thread);
     ~Thread();
 

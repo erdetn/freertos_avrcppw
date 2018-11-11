@@ -7,19 +7,24 @@
 using namespace urtos;
 
 Thread::Thread()
+
 {
-	_created = false;
-	_task = NULL;
-	_stackDepth = 0;
-	_threadPriority = ThreadPriority::MediumPriority;
-	_threadName = NULL;
-	_threadHandler = NULL;
+    _created = false;
+    _task = NULL;
+    _stackDepth = 0;
+    _threadPriority = ThreadPriority::MediumPriority;
+    _threadHandler = NULL;
+
+#if THREAD_NAMING == ENABLE
+    _threadName = NULL;
+#endif
 }
 
+#if THREAD_NAMING == ENABLE
 Thread::Thread(Task task,
-             const portCHAR *threadName,
-             ThreadPriority threadPriority,
-             unsigned portSHORT stackDepth)
+               const portCHAR *threadName,
+               ThreadPriority threadPriority,
+               unsigned portSHORT stackDepth)
 {
     _task = task;
     _threadName = new portCHAR[strlen(threadName) + 1];
@@ -39,35 +44,70 @@ Thread::Thread(Task task,
 
     _created = false;
 }
+#else
+Thread::Thread(Task task,
+               ThreadPriority threadPriority,
+               unsigned portSHORT stackDepth)
+{
+    _task = task;
+
+    _threadPriority = threadPriority;
+
+    if (stackDepth < configMINIMAL_STACK_SIZE)
+    {
+        _stackDepth = configMINIMAL_STACK_SIZE;
+    }
+    else
+    {
+        _stackDepth = stackDepth;
+    }
+
+    _created = false;
+}
+#endif
 
 Thread::Thread(const Thread &thread)
 {
-	_threadHandler = thread._threadHandler;
-	_threadName = thread._threadName;
+    _threadHandler = thread._threadHandler;
     _threadPriority = thread._threadPriority;
     _created = thread._created;
     _task = thread._task;
     _stackDepth = thread._stackDepth;
+
+#if THREAD_NAMING == ENABLE
+    _threadName = thread._threadName;
+#endif
 }
 
 Thread::~Thread()
 {
+#if THREAD_NAMING == ENABLE
     delete[] _threadName;
+#endif
 }
 
 bool Thread::start(void *parametersToPass)
 {
+#if THREAD_NAMING == ENABLE
     _created = (xTaskCreate(_task, (const portCHAR *const)_threadName,
-                              _stackDepth,
-                              parametersToPass,
-                              _threadPriority,
-                              &_threadHandler) == pdPASS);
+                            _stackDepth,
+                            parametersToPass,
+                            _threadPriority,
+                            &_threadHandler) == pdPASS);
+#else
+
+    _created = (xTaskCreate(_task, (const portCHAR *const)NULL,
+                            _stackDepth,
+                            parametersToPass,
+                            _threadPriority,
+                            &_threadHandler) == pdPASS);
+#endif
     return _created;
 }
 
 bool Thread::created() const
 {
-	return _created;
+    return _created;
 }
 
 #if INCLUDE_vTaskDelete == 1

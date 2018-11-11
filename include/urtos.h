@@ -4,6 +4,9 @@
 #ifndef URTOS_H
 #define URTOS_H
 
+#define ENABLE  1
+#define DISABLE 0
+
 #define DEFAULT_TICKS_TO_WAIT (500 / portTICK_PERIOD_MS) //500 [ms]
 #define TICK_PERIOD_MS portTICK_PERIOD_MS
 #define infinite for (;;)
