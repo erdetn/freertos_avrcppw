@@ -153,11 +153,16 @@ void Thread::setPriority(ThreadPriority threadPriority)
 #endif
 
 #if INCLUDE_eTaskGetState == 1
-	ThreadState Thread::getThreadState() const
-	{
-		return (ThreadState)eTaskGetState(_threadHandler);
-	}
+ThreadState Thread::getThreadState() const
+{
+    return (ThreadState)eTaskGetState(_threadHandler);
+}
 #endif
+
+static byte Thread::numberOfThread()
+{
+    return (byte)xTaskGetSchedulerState();
+}
 
 #ifdef SLEEP_
 static void Thread::sleep(unsigned int milliseconds)

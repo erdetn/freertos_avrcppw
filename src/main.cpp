@@ -48,4 +48,7 @@ void setup()
 
 void loop()
 {
+	Serial.print("#: ");
+	Serial.println(Thread::numberOfThread());
+	Thread::sleep(500);
 }

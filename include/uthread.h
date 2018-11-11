@@ -78,10 +78,12 @@ public:
 #endif
 
 #if INCLUDE_eTaskGetState == 1
-	ThreadState getThreadState() const;
+    ThreadState getThreadState() const;
 #endif
 
     unsigned portSHORT stackDepth() const;
+
+    static byte numberOfThread();
 
 #if (INCLUDE_vTaskDelayUntil == 1) || (INCLUDE_vTaskDelay == 1)
 #define SLEEP_
