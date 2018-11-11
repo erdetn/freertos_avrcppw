@@ -1,10 +1,13 @@
+/*
+ * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
+ */
 
 #include <Arduino_FreeRTOS.h>
 
 #ifndef URTOS_H
 #define URTOS_H
 
-#define ENABLE  1
+#define ENABLE 1
 #define DISABLE 0
 
 #define DEFAULT_TICKS_TO_WAIT (500 / portTICK_PERIOD_MS) //500 [ms]
@@ -49,12 +52,26 @@
 #define BitMask EventBits_t
 
 #if configUSE_16_BIT_TICKS == 1
-    #define BITMASK_MAP  0xFF
+#define BITMASK_MAP 0xFF
 #else
-    #define BITMASK_MAP  0xFFFFFF
+#define BITMASK_MAP 0xFFFFFF
 #endif
 
-#define SetBit(_b)      (1<_b)
-#define ClearBit(_b)   ~(1<_b)
+#define SetBit(_b) (1 < _b)
+#define ClearBit(_b) ~(1 < _b)
+
+#if INCLUDE_eTaskGetState == 1
+namespace urtos
+{
+enum ThreadState : unsigned char
+{
+    RUNNING = eRunning,
+    READY = eReady,
+    BLOCKED = Blocked,
+    SUSPENDED = eSuspended,
+    DELETED = eDeleted
+};
+}
+#endif
 
 #endif

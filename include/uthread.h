@@ -15,6 +15,7 @@
 
 namespace urtos
 {
+
 enum ThreadPriority : unsigned char
 {
     LowPriority = P1,
@@ -74,6 +75,10 @@ public:
 
 #if INCLUDE_uxTaskPriorityGet == 1
     unsigned char priority() const;
+#endif
+
+#if INCLUDE_eTaskGetState == 1
+	ThreadState getThreadState() const;
 #endif
 
     unsigned portSHORT stackDepth() const;

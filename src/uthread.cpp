@@ -95,7 +95,6 @@ bool Thread::start(void *parametersToPass)
                             _threadPriority,
                             &_threadHandler) == pdPASS);
 #else
-
     _created = (xTaskCreate(_task, (const portCHAR *const)NULL,
                             _stackDepth,
                             parametersToPass,
@@ -151,6 +150,13 @@ void Thread::setPriority(ThreadPriority threadPriority)
 {
     vTaskPrioritySet(_threadHandler, (UBaseType_t)threadPriority);
 }
+#endif
+
+#if INCLUDE_eTaskGetState == 1
+	ThreadState Thread::getThreadState() const
+	{
+		return (ThreadState)eTaskGetState(_threadHandler);
+	}
 #endif
 
 #ifdef SLEEP_
