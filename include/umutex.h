@@ -18,6 +18,7 @@ private:
     SemaphoreHandle_t _mutex = NULL;
     unsigned long _waitToLock = 0;
     bool _created = false;
+    bool _locked = false;
 
 public:
     Mutex();
@@ -26,12 +27,14 @@ public:
 
     unsigned long waitToLock() const;
 
-    bool lock();
-    bool lock(unsigned long waitToLock);
-    bool unlock();
+    void lock();
+    void lock(unsigned long waitToLock);
+    void unlock();
 
-    bool unlockFromISR(bool *isTaskUnblocked);
+    void unlockFromInterrupt();
+    void lockFromInterrupt();
 
+    bool locked() const;
     bool created() const;
 };
 } // namespace urtos

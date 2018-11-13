@@ -36,19 +36,29 @@ unsigned long Mutex::waitToLock() const
     return _waitToLock;
 }
 
-bool Mutex::lock()
+void Mutex::lock()
 {
-    return (xSemaphoreTake(_mutex, pdMS_TO_TICKS(_waitToLock)) == pdTRUE);
+    _locked = (xSemaphoreTake(_mutex, pdMS_TO_TICKS(_waitToLock)) == pdTRUE);
 }
 
-bool Mutex::lock(unsigned long waitToLock)
+void Mutex::lock(unsigned long waitToLock)
 {
     return (xSemaphoreTake(_mutex, pdMS_TO_TICKS(waitToLock)) == pdTRUE);
 }
 
-bool Mutex::unlock()
+void Mutex::unlock()
 {
-    return (xSemaphoreGive(_mutex) == pdTRUE);
+    _locked = !(xSemaphoreGive(_mutex) == pdTRUE);
+}
+
+void Mutex::unlockFromInterrupt()
+{
+    _locked = !(xSemaphoreGiveFromISR(_mutex, NULL) == pdTRUE);
+}
+
+void Mutex::lockFromInterrupt()
+{
+    _locked = (xSemaphoreTakeFromISR(_mutex, NULL) == pdTRUE);
 }
 
 bool Mutex::created() const
@@ -56,21 +66,7 @@ bool Mutex::created() const
     return _created;
 }
 
-bool Mutex::unlockFromISR(bool *isTaskUnblocked)
+bool Mutex::locked() const
 {
-    portBASE_TYPE isTaskUnblocked_;
-    bool _return;
-
-    _return = xSemaphoreGiveFromISR(_mutex, &isTaskUnblocked_);
-
-    if (isTaskUnblocked_ == pdTRUE)
-    {
-        *(isTaskUnblocked) = true;
-    }
-    else
-    {
-        *(isTaskUnblocked) = false;
-    }
-
-    return (_return == pdTRUE);
+    return _locked;
 }
