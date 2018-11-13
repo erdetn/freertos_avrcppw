@@ -16,19 +16,22 @@ class Mutex
 {
 private:
     SemaphoreHandle_t _mutex = NULL;
-    TickType_t _blockTime = 0;
+    unsigned long _waitToLock = 0;
     bool _created = false;
 
 public:
     Mutex();
-    Mutex(TickType_t blockTime);
+    Mutex(unsigned long waitToLock);
     Mutex(const Mutex &mutex);
 
-    TickType_t getBlockTime() const;
+    unsigned long waitToLock() const;
 
     bool lock();
+    bool lock(unsigned long waitToLock);
     bool unlock();
+
     bool unlockFromISR(bool *isTaskUnblocked);
+
     bool created() const;
 };
 } // namespace urtos

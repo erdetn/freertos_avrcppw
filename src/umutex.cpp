@@ -8,16 +8,16 @@ using namespace urtos;
 
 Mutex::Mutex()
 {
-    _blockTime = 0;
+    _waitToLock = 0;
     _mutex = xSemaphoreCreateMutex();
 
     if (_mutex != NULL)
         _created = true;
 }
 
-Mutex::Mutex(TickType_t blockTime)
+Mutex::Mutex(unsigned long waitToLock)
 {
-    _blockTime = blockTime;
+    _waitToLock = waitToLock;
     _mutex = xSemaphoreCreateMutex();
 
     if (_mutex != NULL)
@@ -26,19 +26,24 @@ Mutex::Mutex(TickType_t blockTime)
 
 Mutex::Mutex(const Mutex &mutex)
 {
-    _blockTime = mutex._blockTime;
+    _waitToLock = mutex._waitToLock;
     _mutex = mutex._mutex;
     _created = mutex._created;
 }
 
-TickType_t Mutex::getBlockTime() const
+unsigned long Mutex::waitToLock() const
 {
-    return _blockTime;
+    return _waitToLock;
 }
 
 bool Mutex::lock()
 {
-    return (xSemaphoreTake(_mutex, _blockTime) == pdTRUE);
+    return (xSemaphoreTake(_mutex, pdMS_TO_TICKS(_waitToLock)) == pdTRUE);
+}
+
+bool Mutex::lock(unsigned long waitToLock)
+{
+    return (xSemaphoreTake(_mutex, pdMS_TO_TICKS(waitToLock)) == pdTRUE);
 }
 
 bool Mutex::unlock()
