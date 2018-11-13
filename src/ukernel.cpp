@@ -16,7 +16,7 @@ static void Kernel::kill()
     vTaskEndScheduler();
 }
 
-static byte Kernel::numberOfThreads()
+static Byte Kernel::numberOfThreads()
 {
-    return (byte)xTaskGetSchedulerState();
+    return (Byte)xTaskGetSchedulerState();
 }

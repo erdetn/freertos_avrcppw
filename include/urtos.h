@@ -62,7 +62,7 @@
 #define SetBit(_b) (1 < _b)
 #define ClearBit(_b) ~(1 < _b)
 
-typedef unsigned char byte;
+typedef unsigned char Byte;
 
 #if INCLUDE_eTaskGetState == 1
 namespace urtos

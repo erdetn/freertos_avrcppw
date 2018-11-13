@@ -19,31 +19,42 @@ namespace urtos
 class Queue
 {
 private:
-    QueueHandle_t _hQueue;
-    TickType_t _waitToSend;
-    TickType_t _waitToReceive;
-    UBaseType_t _length;
-    UBaseType_t _unitSize;
+    QueueHandle_t _queue;
+    unsigned long _sendTimeout;
+    unsigned long _receiveTimeout;
+    const Byte _capacity;
+    const Byte _unitSize;
 
 public:
-    Queue(UBaseType_t length, UBaseType_t unitSize);
-    Queue(UBaseType_t length, UBaseType_t unitSize, TickType_t defaultSendReceiveTime);
-    Queue(UBaseType_t length, UBaseType_t unitSize, TickType_t waitToSend, TickType_t waitToReceive);
+    Queue(Byte capacity, Byte unitSize);
+    Queue(Byte capacity, Byte unitSize,
+          unsigned long sendTimeout,
+          unsigned long receveTimeout);
 
     bool send(const void *data);
-    bool send(const void *data, TickType_t waitToSend);
+    bool send(const void *data, unsigned long sendTimeout);
+	bool sendFromInterrupt(const void *data);
 
     bool receive(void *data);
-    bool receive(void *data, TickType_t waitToReceive);
+    bool receive(void *data, unsigned long receiveTimeout);
+	bool receiveFromInterrupt(void *data);
 
     bool copy(void *data);
-    bool copy(void *data, TickType_t waitToCopy);
+    bool copy(void *data, unsigned long copyTimeout);
+	bool copyFromInterrupt(void *data);
 
-    TickType_t waitingToSendTime() const;
-    TickType_t waitingToReceiveTime() const;
+	void empty();
 
-    UBaseType_t length() const;
-    UBaseType_t unitSize() const;
+	Byte count() const;
+	Byte countFromInterrupt() const;
+
+	Byte available() const;
+
+    Byte capacity() const;
+    Byte unitSize() const;
+
+	bool isEmpty() const;
+	bool isFull() const;
 };
 } // namespace urtos
 

@@ -6,82 +6,105 @@
 
 using namespace urtos;
 
-Queue::Queue(UBaseType_t length, UBaseType_t unitSize)
+Queue::Queue(Byte capacity, Byte unitSize) : _capacity(capacity), _unitSize(unitSize)
 {
-    _waitToReceive = DEFAULT_TICKS_TO_WAIT;
-    _waitToSend    = DEFAULT_TICKS_TO_WAIT;
-    _length        = length;
-    _unitSize      = unitSize;
+    _receiveTimeout = DEFAULT_TICKS_TO_WAIT;
+    _sendTimeout = DEFAULT_TICKS_TO_WAIT;
 
-    _hQueue = xQueueCreate(_length, _unitSize);
+    _queue = xQueueCreate(_capacity, _unitSize);
 }
 
-Queue::Queue(UBaseType_t length, UBaseType_t unitSize, TickType_t defaultSendReceiveTime)
+Queue::Queue(Byte capacity, Byte unitSize,
+             unsigned long sendTimeout,
+             unsigned long receveTimeout) : _capacity(capacity), _unitSize(unitSize)
 {
-    _waitToReceive = defaultSendReceiveTime/portTICK_PERIOD_MS;
-    _waitToSend    = defaultSendReceiveTime/portTICK_PERIOD_MS;
-    _length        = length;
-    _unitSize      = unitSize;
+    _receiveTimeout = receveTimeout;
+    _sendTimeout = sendTimeout;
 
-    _hQueue = xQueueCreate(_length, _unitSize);
-}
-
-Queue::Queue(UBaseType_t length, UBaseType_t unitSize, TickType_t waitToSend, TickType_t waitToReceive)
-{
-    _waitToReceive = waitToReceive/portTICK_PERIOD_MS;
-    _waitToSend    = waitToSend/portTICK_PERIOD_MS;
-    _length        = length;
-    _unitSize      = unitSize;
-
-    _hQueue = xQueueCreate(_length, _unitSize);
+    _queue = xQueueCreate(_capacity, _unitSize);
 }
 
 bool Queue::send(const void *data)
 {
-    return (xQueueSend(_hQueue, data, _waitToSend) == pdTRUE);
+    return (xQueueSend(_queue, data, pdMS_TO_TICKS(_sendTimeout)) == pdTRUE);
 }
 
-bool Queue::send(const void *data, TickType_t waitToSend)
+bool Queue::send(const void *data, unsigned long sendTimeout)
 {
-    return (xQueueSend(_hQueue, data, waitToSend) == pdTRUE);
+    return (xQueueSend(_queue, data, pdMS_TO_TICKS(sendTimeout)) == pdTRUE);
+}
+
+bool Queue::sendFromInterrupt(const void *data)
+{
+	return (xQueueSendFromISR(_queue, data, NULL) == pdTRUE);
 }
 
 bool Queue::receive(void *data)
 {
-    return (xQueueReceive(_hQueue, data, _waitToReceive) == pdTRUE);
+    return (xQueueReceive(_queue, data, pdMS_TO_TICKS(_receiveTimeout)) == pdTRUE);
 }
 
-bool Queue::receive(void *data, TickType_t waitToReceive)
+bool Queue::receive(void *data, unsigned long receiveTimeout)
 {
-    return (xQueueReceive(_hQueue, data, waitToReceive) == pdTRUE);
+    return (xQueueReceive(_queue, data, pdMS_TO_TICKS(receiveTimeout)) == pdTRUE);
+}
+
+bool Queue::receiveFromInterrupt(void *data)
+{
+	return (xQueueReceiveFromISR(_queue, data, NULL) == pdTRUE);
 }
 
 bool Queue::copy(void *data)
 {
-    return (xQueuePeek(_hQueue, data, _waitToReceive) == pdTRUE);
+    return (xQueuePeek(_queue, data, pdMS_TO_TICKS(_receiveTimeout)) == pdTRUE);
 }
 
-bool Queue::copy(void *data, TickType_t waitToCopy)
+bool Queue::copy(void *data, unsigned long copyTimeout)
 {
-    return (xQueuePeek(_hQueue, data, waitToCopy) == pdTRUE);
+    return (xQueuePeek(_queue, data, pdMS_TO_TICKS(copyTimeout)) == pdTRUE);
 }
 
-TickType_t Queue::waitingToSendTime() const
+bool Queue::copyFromInterrupt(void *data)
 {
-    return _waitToSend;
+	return (xQueuePeekFromISR(_queue, data) == pdTRUE);
 }
 
-TickType_t Queue::waitingToReceiveTime() const
+void Queue::empty()
 {
-    return _waitToReceive;
+    xQueueReset(_queue);
 }
 
-UBaseType_t Queue::length() const
+Byte Queue::count() const
 {
-    return _length;
+	return uxQueueMessagesWaiting((const QueueHandle_t) _queue);
 }
 
-UBaseType_t Queue::unitSize() const
+Byte Queue::countFromInterrupt() const
+{
+	return uxQueueMessagesWaitingFromISR((const QueueHandle_t) _queue);
+}
+
+Byte Queue::available() const
+{
+	return uxQueueSpacesAvailable((const QueueHandle_t) _queue);
+}
+
+Byte Queue::capacity() const
+{
+    return _capacity;
+}
+
+Byte Queue::unitSize() const
 {
     return _unitSize;
+}
+
+bool Queue::isEmpty() const
+{
+	return (xQueueIsQueueEmptyFromISR((const QueueHandle_t) _queue) == pdTRUE);
+}
+
+bool Queue::isFull() const
+{
+	return (xQueueIsQueueFullFromISR((const QueueHandle_t) _queue) == pdTRUE);
 }

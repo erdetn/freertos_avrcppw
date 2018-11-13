@@ -18,7 +18,7 @@ public:
     static void run();
     static void kill();
 
-    static byte numberOfThreads();
+    static Byte numberOfThreads();
 };
 } // namespace urtos
 #endif
