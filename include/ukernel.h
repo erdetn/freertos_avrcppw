@@ -15,8 +15,8 @@ namespace urtos
 class Kernel
 {
 public:
-	static void run();
-	static void kill();
+    static void run();
+    static void kill();
 };
 } // namespace urtos
 #endif

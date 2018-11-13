@@ -32,9 +32,9 @@ private:
     bool _created;
     Task _task;
     unsigned portSHORT _stackDepth;
-	void *_paramToPass;
+    void *_paramToPass;
 
-	bool hook();
+    bool hook();
 
 #if THREAD_NAMING == ENABLE
     portCHAR *_threadName;
@@ -47,12 +47,12 @@ public:
            const portCHAR *threadName,
            ThreadPriority threadPriority,
            unsigned portSHORT stackDepth,
-		   void *paramToPass);
+           void *paramToPass);
 #else
     Thread(Task task,
            ThreadPriority threadPriority,
            unsigned portSHORT stackDepth,
-		   void *paramToPass);
+           void *paramToPass);
 #endif
 
     Thread(const Thread &thread);

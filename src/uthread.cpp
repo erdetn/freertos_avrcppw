@@ -175,10 +175,10 @@ static byte Thread::numberOfThread()
 #ifdef SLEEP_
 static void Thread::sleep(unsigned long milliseconds)
 {
-    #if INCLUDE_vTaskDelay == 1
-        vTaskDelay((milliseconds * configTICK_RATE_HZ) / 1000L);
-    #else
-    #error "No task delay configuration set."
-    #endif
+#if INCLUDE_vTaskDelay == 1
+    vTaskDelay((milliseconds * configTICK_RATE_HZ) / 1000L);
+#else
+#error "No task delay configuration set."
+#endif
 }
 #endif

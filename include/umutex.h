@@ -22,7 +22,7 @@ private:
 public:
     Mutex();
     Mutex(TickType_t blockTime);
-	Mutex(const Mutex& mutex);
+    Mutex(const Mutex &mutex);
 
     TickType_t getBlockTime() const;
 
