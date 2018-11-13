@@ -88,8 +88,6 @@ public:
 
     unsigned portSHORT stackDepth() const;
 
-    static byte numberOfThread();
-
 #if (INCLUDE_vTaskDelayUntil == 1) || (INCLUDE_vTaskDelay == 1)
 #define SLEEP_
     static void sleep(unsigned long milliseconds);

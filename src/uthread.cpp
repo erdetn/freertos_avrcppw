@@ -167,11 +167,6 @@ ThreadState Thread::getThreadState() const
 }
 #endif
 
-static byte Thread::numberOfThread()
-{
-    return (byte)xTaskGetSchedulerState();
-}
-
 #ifdef SLEEP_
 static void Thread::sleep(unsigned long milliseconds)
 {
