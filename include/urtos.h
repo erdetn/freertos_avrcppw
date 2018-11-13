@@ -59,8 +59,8 @@
 #define BITMASK_MAP 0xFFFFFF
 #endif
 
-#define SetBit(_b) (1 < _b)
-#define ClearBit(_b) ~(1 < _b)
+#define SET_BIT(_b) (1 << _b)
+#define CLEAR_BIT(_b) ~(1 << _b)
 
 typedef unsigned char Byte;
 
