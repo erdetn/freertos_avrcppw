@@ -11,19 +11,19 @@
 
 using namespace urtos;
 
-const int ledPin = 13;
+const int LED_PIN = 13;
 
 Thread thread1;
 Thread thread2;
 
 static void ledTask(void *dataToPass)
 {
-    pinMode(ledPin, OUTPUT);
+    pinMode(LED_PIN, OUTPUT);
     LOOP
     {
-        digitalWrite(ledPin, HIGH);
+        digitalWrite(LED_PIN, HIGH);
         Thread::sleep(500);
-        digitalWrite(ledPin, LOW);
+        digitalWrite(LED_PIN, LOW);
         Thread::sleep(500);
     }
 }
@@ -39,7 +39,7 @@ static void redLedTask(void *dataToPass)
     LOOP
     {
         Serial.print("Num of threads: ");
-		Serial.println(Kernel::numberOfThread());
+        Serial.println(Kernel::numberOfThread());
         Thread::sleep(1000);
     }
 }
