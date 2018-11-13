@@ -39,7 +39,7 @@ static void redLedTask(void *dataToPass)
     LOOP
     {
         Serial.print("Num of threads: ");
-        Serial.println(Kernel::numberOfThread());
+        Serial.println(Kernel::numberOfThreads());
         Thread::sleep(1000);
     }
 }

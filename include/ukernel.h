@@ -17,7 +17,7 @@ class Kernel
 public:
     static void run();
     static void kill();
-    static byte numberOfThread();
+    static byte numberOfThreads();
 };
 } // namespace urtos
 #endif
