@@ -12,7 +12,7 @@ Mutex::Mutex()
   _mutex = xSemaphoreCreateMutex();
 
   if (_mutex != NULL)
-    _isCreated = true;
+    _created = true;
 }
 
 Mutex::Mutex(TickType_t blockTime)
@@ -21,7 +21,14 @@ Mutex::Mutex(TickType_t blockTime)
   _mutex = xSemaphoreCreateMutex();
 
   if (_mutex != NULL)
-    _isCreated = true;
+    _created = true;
+}
+
+Mutex::Mutex(const Mutex& mutex)
+{
+	_blockTime = mutex._blockTime;
+	_mutex = mutex._mutex;
+	_created = mutex._created;
 }
 
 TickType_t Mutex::getBlockTime() const
@@ -39,17 +46,17 @@ bool Mutex::unlock()
   return (xSemaphoreGive(_mutex) == pdTRUE);
 }
 
-bool Mutex::isCreated() const
+bool Mutex::created() const
 {
-  return _isCreated;
+  return _created;
 }
 
 bool Mutex::unlockFromISR(bool *isTaskUnblocked)
 {
   portBASE_TYPE isTaskUnblocked_;
-  bool return_;
+  bool _return;
 
-  return_ = xSemaphoreGiveFromISR(_mutex, &isTaskUnblocked_);
+  _return = xSemaphoreGiveFromISR(_mutex, &isTaskUnblocked_);
 
   if(isTaskUnblocked_ == pdTRUE)
   {
@@ -60,5 +67,5 @@ bool Mutex::unlockFromISR(bool *isTaskUnblocked)
     *(isTaskUnblocked) = false;
   }
 
-  return (return_ == pdTRUE);
+  return (_return == pdTRUE);
 }

@@ -3,52 +3,54 @@
  */
 
 #include <Arduino.h>
+// #include <HardwareSerial.h>
 
 #include "uthread.h"
+#include "umutex.h"
+#include "ukernel.h"
 
 using namespace urtos;
 
 const int ledPin = 13;
-const int redLedPin = 12;
 
-Thread *thread1;
-Thread *thread2;
-Thread thread3;
+Thread thread1;
+Thread thread2;
 
-void ledTask()
+static void ledTask(void *dataToPass)
 {
-    digitalWrite(ledPin, HIGH);
-    Thread::sleep(500);
-    digitalWrite(ledPin, LOW);
-    Thread::sleep(500);
+    pinMode(ledPin, OUTPUT);
+    LOOP
+    {
+        digitalWrite(ledPin, HIGH);
+        Thread::sleep(500);
+        digitalWrite(ledPin, LOW);
+        Thread::sleep(500);
+    }
 }
 
-void redLedTask()
+static void redLedTask(void *dataToPass)
 {
-    digitalWrite(redLedPin, HIGH);
-    Thread::sleep(500);
-    digitalWrite(redLedPin, LOW);
-    Thread::sleep(500);
+    Serial.begin(9600);
+    while (!Serial)
+    {
+    }
+    Serial.println("setup");
+
+    LOOP
+    {
+        Serial.println("Thread 2");
+        Thread::sleep(1000);
+    }
 }
 
 void setup()
 {
-    pinMode(ledPin, OUTPUT);
-    pinMode(redLedPin, OUTPUT);
+    thread1 = Thread((Task)ledTask, "thread1", ThreadPriority::MEDIUM_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
+    thread2 = Thread((Task)redLedTask, "thread2", ThreadPriority::HIGH_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
 
-    thread1 = new Thread((Task)ledTask, ThreadPriority::MediumPriority, 100);
-    thread2 = new Thread((Task)redLedTask, ThreadPriority::LowPriority, 100);
-
-    thread3 = *thread2;
-
-    thread1->start(NULL);
-    thread2->start(NULL);
-    thread3.start(NULL);
+    Kernel::run();
 }
 
 void loop()
 {
-	Serial.print("#: ");
-	Serial.println(Thread::numberOfThread());
-	Thread::sleep(500);
 }

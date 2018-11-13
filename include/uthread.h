@@ -11,17 +11,17 @@
 #ifndef UTHREAD_H
 #define UTHREAD_H
 
-#define THREAD_NAMING DISABLE
+#define THREAD_NAMING ENABLE
 
 namespace urtos
 {
 
 enum ThreadPriority : unsigned char
 {
-    LowPriority = P1,
-    MediumPriority = P2,
-    HighPriority = P3,
-    ExtraPriority = P4
+    LOW_PRIORITY = P1,
+    MEDIUM_PRIORITY = P2,
+    HIGH_PRIORITY = P3,
+    EXTRA_PRIORITY = P4
 };
 
 class Thread
@@ -32,6 +32,9 @@ private:
     bool _created;
     Task _task;
     unsigned portSHORT _stackDepth;
+	void *_paramToPass;
+
+	bool hook();
 
 #if THREAD_NAMING == ENABLE
     portCHAR *_threadName;
@@ -43,11 +46,13 @@ public:
     Thread(Task task,
            const portCHAR *threadName,
            ThreadPriority threadPriority,
-           unsigned portSHORT stackDepth);
+           unsigned portSHORT stackDepth,
+		   void *paramToPass);
 #else
     Thread(Task task,
            ThreadPriority threadPriority,
-           unsigned portSHORT stackDepth);
+           unsigned portSHORT stackDepth,
+		   void *paramToPass);
 #endif
 
     Thread(const Thread &thread);
@@ -87,7 +92,7 @@ public:
 
 #if (INCLUDE_vTaskDelayUntil == 1) || (INCLUDE_vTaskDelay == 1)
 #define SLEEP_
-    static void sleep(unsigned int milliseconds);
+    static void sleep(unsigned long milliseconds);
 #endif
 };
 } // namespace urtos
