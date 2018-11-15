@@ -49,6 +49,11 @@ u_size SharedBuffer::writeFromInterrupt(const void *data, u_size length)
     xMessageBufferSendFromISR(_sharedBuffer, data, length, NULL);
 }
 
+u_size SharedBuffer::read(void *data)
+{
+    return xMessageBufferReceive(_sharedBuffer, data, _bufferSize, pdMS_TO_TICKS(0));
+}
+
 u_size SharedBuffer::read(void *data, u_size length)
 {
     return xMessageBufferReceive(_sharedBuffer, data, length, pdMS_TO_TICKS(0));

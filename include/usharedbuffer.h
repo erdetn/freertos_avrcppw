@@ -26,6 +26,7 @@ public:
 
     u_size writeFromInterrupt(const void *data, u_size length);
 
+    u_size SharedBuffer::read(void *data);
     u_size read(void *data, u_size length);
     u_size read(void *data, u_size length, unsigned long timeout);
 
