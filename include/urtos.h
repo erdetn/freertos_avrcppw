@@ -12,6 +12,8 @@
 #define ENABLE 1
 #define DISABLE 0
 
+#define U_PACKED __attribute__((packed))
+
 #define LOOP while (1)
 
 #define DEFAULT_TICKS_TO_WAIT (500 / portTICK_PERIOD_MS) //500 [ms]
