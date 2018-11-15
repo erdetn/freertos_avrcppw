@@ -5,33 +5,31 @@
 #include <Arduino.h>
 
 #include "uthread.h"
-#include "uqueue.h"
+#include "usharedbuffer.h"
 #include "ukernel.h"
 
 using namespace urtos;
 
-const int qCapacity = 10;
-
 int count = 0;
 Thread sendingThread;
 Thread receivingThread;
-Queue queue(qCapacity, sizeof(int));
+SharedBuffer sharedBuffer(20);
 
-static void sendingTask(void *dataToPass)
+static void sendingTask(u_object dataToPass)
 {
-    int _array[] = {9, 1, 8, 2, 7, 3, 6, 4, 5};
-    int i = 0;
+    char _str[] = "hello thread";
+    u_size _length = strlen((const char *)_str);
     LOOP
     {
-        queue.send((const void *)&_array[i]);
-        i++;
-        if (i == 9)
-            i = 0;
-        Thread::sleep(250);
+        if (sharedBuffer.isEmpty())
+        {
+            sharedBuffer.write(_str, _length, 100);
+        }
+        Thread::sleep(500);
     }
 }
 
-static void receivingTask(void *dataToPass)
+static void receivingTask(u_object dataToPass)
 {
     int val;
     Serial.begin(9600);
@@ -40,16 +38,20 @@ static void receivingTask(void *dataToPass)
     }
     Serial.println("setup");
 
+    char _str[50];
+    u_size _len;
+
     LOOP
     {
-        while (queue.count() > 0)
+        if (!sharedBuffer.isEmpty())
         {
-            queue.receive(&val);
-            Serial.print("val = ");
-            Serial.print(val);
-            Serial.print(" [");
-            Serial.print(queue.count());
-            Serial.println("]");
+            _len = sharedBuffer.read(_str, 20);
+            _str[_len] = 0;
+            if (_len > 0)
+            {
+                Serial.print("read: ");
+                Serial.println(_str);
+            }
         }
         Thread::sleep(750);
     }

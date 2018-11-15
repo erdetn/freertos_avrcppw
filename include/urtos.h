@@ -4,6 +4,8 @@
 
 #include <Arduino_FreeRTOS.h>
 
+#include "utypes.h"
+
 #ifndef URTOS_H
 #define URTOS_H
 
@@ -61,8 +63,6 @@
 
 #define SET_BIT(_b) (1 << _b)
 #define CLEAR_BIT(_b) ~(1 << _b)
-
-typedef unsigned char Byte;
 
 #if INCLUDE_eTaskGetState == 1
 namespace urtos

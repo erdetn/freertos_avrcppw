@@ -167,6 +167,11 @@ ThreadState Thread::getThreadState() const
 }
 #endif
 
+unsigned int Thread::stackDepth() const
+{
+	return _stackDepth;
+}
+
 #ifdef SLEEP_
 static void Thread::sleep(unsigned long milliseconds)
 {

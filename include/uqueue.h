@@ -22,12 +22,12 @@ private:
     QueueHandle_t _queue;
     unsigned long _sendTimeout;
     unsigned long _receiveTimeout;
-    const Byte _capacity;
-    const Byte _unitSize;
+    const u_byte _capacity;
+    const u_byte _unitSize;
 
 public:
-    Queue(Byte capacity, Byte unitSize);
-    Queue(Byte capacity, Byte unitSize,
+    Queue(u_byte capacity, u_byte unitSize);
+    Queue(u_byte capacity, u_byte unitSize,
           unsigned long sendTimeout,
           unsigned long receveTimeout);
 
@@ -45,13 +45,13 @@ public:
 
 	void empty();
 
-	Byte count() const;
-	Byte countFromInterrupt() const;
+	u_byte count() const;
+	u_byte countFromInterrupt() const;
 
-	Byte available() const;
+	u_byte available() const;
 
-    Byte capacity() const;
-    Byte unitSize() const;
+    u_byte capacity() const;
+    u_byte unitSize() const;
 
 	bool isEmpty() const;
 	bool isFull() const;

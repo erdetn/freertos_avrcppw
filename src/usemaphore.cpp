@@ -15,7 +15,7 @@ Semaphore::Semaphore()
     _isCreated = true;
 }
 
-Semaphore::Semaphore(TickType_t blockTime)
+Semaphore::Semaphore(unsigned long blockTime)
 {
   _blockTime = blockTime;
   vSemaphoreCreateBinary(_semaphore);
@@ -24,14 +24,19 @@ Semaphore::Semaphore(TickType_t blockTime)
     _isCreated = true;
 }
 
-TickType_t Semaphore::getBlockTime() const
+unsigned long Semaphore::getBlockTime() const
 {
   return _blockTime;
 }
 
 bool Semaphore::take()
 {
-  return (xSemaphoreTake(_semaphore, _blockTime) == pdTRUE);
+  return (xSemaphoreTake(_semaphore, pdMS_TO_TICKS(_blockTime)) == pdTRUE);
+}
+
+bool Semaphore::take(unsigned long blockTime)
+{
+	return (xSemaphoreTake(_semaphore, pdMS_TO_TICKS(blockTime)) == pdTRUE );
 }
 
 bool Semaphore::give()

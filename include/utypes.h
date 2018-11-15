@@ -1,0 +1,14 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <Arduino_FreeRTOS.h>
+
+#ifndef UTYPES_H
+#define UTYPES_H
+
+typedef size_t u_size;
+typedef unsigned char u_byte;
+
+#define u_object void*
+
+
+#endif

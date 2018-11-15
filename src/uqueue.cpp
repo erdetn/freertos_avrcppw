@@ -6,7 +6,7 @@
 
 using namespace urtos;
 
-Queue::Queue(Byte capacity, Byte unitSize) : _capacity(capacity), _unitSize(unitSize)
+Queue::Queue(u_byte capacity, u_byte unitSize) : _capacity(capacity), _unitSize(unitSize)
 {
     _receiveTimeout = DEFAULT_TICKS_TO_WAIT;
     _sendTimeout = DEFAULT_TICKS_TO_WAIT;
@@ -14,7 +14,7 @@ Queue::Queue(Byte capacity, Byte unitSize) : _capacity(capacity), _unitSize(unit
     _queue = xQueueCreate(_capacity, _unitSize);
 }
 
-Queue::Queue(Byte capacity, Byte unitSize,
+Queue::Queue(u_byte capacity, u_byte unitSize,
              unsigned long sendTimeout,
              unsigned long receveTimeout) : _capacity(capacity), _unitSize(unitSize)
 {
@@ -74,27 +74,27 @@ void Queue::empty()
     xQueueReset(_queue);
 }
 
-Byte Queue::count() const
+u_byte Queue::count() const
 {
 	return uxQueueMessagesWaiting((const QueueHandle_t) _queue);
 }
 
-Byte Queue::countFromInterrupt() const
+u_byte Queue::countFromInterrupt() const
 {
 	return uxQueueMessagesWaitingFromISR((const QueueHandle_t) _queue);
 }
 
-Byte Queue::available() const
+u_byte Queue::available() const
 {
 	return uxQueueSpacesAvailable((const QueueHandle_t) _queue);
 }
 
-Byte Queue::capacity() const
+u_byte Queue::capacity() const
 {
     return _capacity;
 }
 
-Byte Queue::unitSize() const
+u_byte Queue::unitSize() const
 {
     return _unitSize;
 }

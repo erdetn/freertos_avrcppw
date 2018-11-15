@@ -7,39 +7,38 @@
 
 #include "urtos.h"
 
+#ifndef USHAREDBUFFER_H
+#define USHAREDBUFFER_H
+
 namespace urtos
 {
 class SharedBuffer
 {
 private:
-	MessageBufferHandle_t _sharedBuffer;
-	const size_t _bufferSize;
+    MessageBufferHandle_t _sharedBuffer;
+    const u_size _bufferSize;
 
 public:
-    SharedBuffer(size_t bufferSize);
+    SharedBuffer(u_size bufferSize);
 
-	size_t attach(const void *payload, size_t length);
-	size_t attach(const void *payload, size_t length, unsigned long timeout);
+    u_size write(const void *data, u_size length);
+    u_size write(const void *data, u_size length, unsigned long timeout);
 
-	size_t attachFromInterrupt(const void *payload, size_t length);
-	size_t attachFromInterrupt(const void *payload, size_t length, unsigned long timeout);
+    u_size writeFromInterrupt(const void *data, u_size length);
 
-	size_t detach(const void *payload, size_t length);
-	size_t detach(const void *payload, size_t length, unsigned long timeout);
+    u_size read(void *data, u_size length);
+    u_size read(void *data, u_size length, unsigned long timeout);
 
-	size_t detachFromInterrupt(const void *payload, size_t length);
-	size_t detachFromInterrupt(const void *payload, size_t length, unsigned long timeout);
+    u_size readFromInterrupt(void *data, u_size length);
 
-	bool clear();
+    bool clear();
 
-	bool isEmpty() const;
-	bool isFull() const;
+    bool isEmpty() const;
+    bool isFull() const;
 
-	size_t available() const;
-
-	size_t bufferSize() const;
+    u_size available() const;
+    u_size bufferSize() const;
 };
 } // namespace urtos
 
-#endif
 #endif

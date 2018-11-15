@@ -16,16 +16,17 @@ class Semaphore
 {
 private:
     SemaphoreHandle_t _semaphore = NULL;
-    TickType_t _blockTime = 0;
+    unsigned long _blockTime = 0;
     bool _isCreated = false;
 
 public:
     Semaphore();
-    Semaphore(TickType_t blockTime);
+    Semaphore(unsigned long blockTime);
 
-    TickType_t getBlockTime() const;
+    unsigned long getBlockTime() const;
 
     bool take();
+	bool take(unsigned long blockTime);
     bool give();
     bool isCreated() const;
     bool giveFromISR(bool *isTaskUnblocked);

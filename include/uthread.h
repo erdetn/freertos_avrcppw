@@ -86,7 +86,7 @@ public:
     ThreadState getThreadState() const;
 #endif
 
-    unsigned portSHORT stackDepth() const;
+    unsigned int stackDepth() const;
 
 #if (INCLUDE_vTaskDelayUntil == 1) || (INCLUDE_vTaskDelay == 1)
 #define SLEEP_
