@@ -23,7 +23,7 @@ static void sendingTask(u_object dataToPass)
     int i = 0;
     LOOP
     {
-        queue.send((const void *)&_array[i]);
+        queue.enqueue((const void *)&_array[i]);
         i++;
         if (i == 9)
             i = 0;
@@ -44,7 +44,7 @@ static void receivingTask(u_object dataToPass)
     {
         while (queue.count() > 0)
         {
-            queue.receive(&val);
+            queue.dequeue(&val);
             Serial.print("val = ");
             Serial.print(val);
             Serial.print(" [");

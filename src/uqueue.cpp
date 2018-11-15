@@ -24,32 +24,32 @@ Queue::Queue(u_byte capacity, u_byte unitSize,
     _queue = xQueueCreate(_capacity, _unitSize);
 }
 
-bool Queue::send(const void *data)
+bool Queue::enqueue(const void *data)
 {
     return (xQueueSend(_queue, data, pdMS_TO_TICKS(_sendTimeout)) == pdTRUE);
 }
 
-bool Queue::send(const void *data, unsigned long sendTimeout)
+bool Queue::enqueue(const void *data, unsigned long sendTimeout)
 {
     return (xQueueSend(_queue, data, pdMS_TO_TICKS(sendTimeout)) == pdTRUE);
 }
 
-bool Queue::sendFromInterrupt(const void *data)
+bool Queue::enqueueFromInterrupt(const void *data)
 {
 	return (xQueueSendFromISR(_queue, data, NULL) == pdTRUE);
 }
 
-bool Queue::receive(void *data)
+bool Queue::dequeue(void *data)
 {
     return (xQueueReceive(_queue, data, pdMS_TO_TICKS(_receiveTimeout)) == pdTRUE);
 }
 
-bool Queue::receive(void *data, unsigned long receiveTimeout)
+bool Queue::dequeue(void *data, unsigned long receiveTimeout)
 {
     return (xQueueReceive(_queue, data, pdMS_TO_TICKS(receiveTimeout)) == pdTRUE);
 }
 
-bool Queue::receiveFromInterrupt(void *data)
+bool Queue::dequeueFromInterrupt(void *data)
 {
 	return (xQueueReceiveFromISR(_queue, data, NULL) == pdTRUE);
 }

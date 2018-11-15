@@ -31,13 +31,13 @@ public:
           unsigned long sendTimeout,
           unsigned long receveTimeout);
 
-    bool send(const void *data);
-    bool send(const void *data, unsigned long sendTimeout);
-	bool sendFromInterrupt(const void *data);
+    bool enqueue(const void *data);
+    bool enqueue(const void *data, unsigned long sendTimeout);
+	bool enqueueFromInterrupt(const void *data);
 
-    bool receive(void *data);
-    bool receive(void *data, unsigned long receiveTimeout);
-	bool receiveFromInterrupt(void *data);
+    bool dequeue(void *data);
+    bool dequeue(void *data, unsigned long receiveTimeout);
+	bool dequeueFromInterrupt(void *data);
 
     bool copy(void *data);
     bool copy(void *data, unsigned long copyTimeout);
