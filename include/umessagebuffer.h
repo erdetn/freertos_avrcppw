@@ -7,26 +7,31 @@
 
 #include "urtos.h"
 
-#ifndef USHAREDBUFFER_H
-#define USHAREDBUFFER_H
+#ifndef UMESSAGEBUFFER
+#define UMESSAGEBUFFER
 
 namespace urtos
 {
-class SharedBuffer
+class MessageBuffer
 {
 private:
     MessageBufferHandle_t _sharedBuffer;
     const u_size _bufferSize;
 
+#if configSUPPORT_STATIC_ALLOCATION == 1
+	StaticMessageBuffer_t _msgBuffer;
+    char _buffer[];
+#endif
+
 public:
-    SharedBuffer(u_size bufferSize);
+    MessageBuffer(u_size bufferSize);
 
     u_size write(const void *data, u_size length);
     u_size write(const void *data, u_size length, unsigned long timeout);
 
     u_size writeFromInterrupt(const void *data, u_size length);
 
-    u_size SharedBuffer::read(void *data);
+    u_size read(void *data);
     u_size read(void *data, u_size length);
     u_size read(void *data, u_size length, unsigned long timeout);
 

@@ -5,7 +5,7 @@
 #include <Arduino.h>
 
 #include "uthread.h"
-#include "usharedbuffer.h"
+#include "umessagebuffer.h"
 #include "ukernel.h"
 
 using namespace urtos;
@@ -13,7 +13,7 @@ using namespace urtos;
 int count = 0;
 Thread sendingThread;
 Thread receivingThread;
-SharedBuffer sharedBuffer(20);
+MessageBuffer msgBuffer(20);
 
 static void sendingTask(u_object dataToPass)
 {
@@ -21,9 +21,9 @@ static void sendingTask(u_object dataToPass)
     u_size _length = strlen((const char *)_str);
     LOOP
     {
-        if (sharedBuffer.isEmpty())
+        if (msgBuffer.isEmpty())
         {
-            sharedBuffer.write(_str, _length, 100);
+            msgBuffer.write(_str, _length, 100);
         }
         Thread::sleep(500);
     }
@@ -43,9 +43,9 @@ static void receivingTask(u_object dataToPass)
 
     LOOP
     {
-        if (!sharedBuffer.isEmpty())
+        if (!msgBuffer.isEmpty())
         {
-            _len = sharedBuffer.read(_str, 20);
+            _len = msgBuffer.read(_str, 20);
             _str[_len] = 0;
             if (_len > 0)
             {
