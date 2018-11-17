@@ -184,10 +184,12 @@ void Thread::sleep(unsigned long milliseconds)
 }
 #endif
 
+#if INCLUDE_xTaskAbortDelay == 1
 bool Thread::unblock()
 {
     return (xTaskAbortDelay(_threadHandler) == pdPASS);
 }
+#endif
 
 void Thread::yield()
 {

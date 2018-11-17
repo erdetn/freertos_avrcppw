@@ -98,7 +98,9 @@ public:
     static void sleep(unsigned long milliseconds);
 #endif
 
-	bool unblock();
+#if INCLUDE_xTaskAbortDelay == 1
+    bool unblock();
+#endif
 
     static void yield();
 };
