@@ -89,6 +89,7 @@ Thread::~Thread()
 #if THREAD_NAMING == ENABLE
     delete[] _threadName;
 #endif
+    vTaskDelete(_threadHandler);
 }
 
 bool Thread::hook()
