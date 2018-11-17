@@ -98,6 +98,8 @@ public:
     static void sleep(unsigned long milliseconds);
 #endif
 
+	bool unblock();
+
     static void yield();
 };
 } // namespace urtos

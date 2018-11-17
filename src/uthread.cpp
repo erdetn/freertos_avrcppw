@@ -184,6 +184,11 @@ void Thread::sleep(unsigned long milliseconds)
 }
 #endif
 
+bool Thread::unblock()
+{
+    return (xTaskAbortDelay(_threadHandler) == pdPASS);
+}
+
 void Thread::yield()
 {
     taskYIELD();
