@@ -15,12 +15,7 @@ Thread::Thread()
     _threadPriority = ThreadPriority::MEDIUM_PRIORITY;
     _threadHandler = NULL;
     _paramToPass = NULL;
-
-#if THREAD_NAMING == ENABLE
     _threadName = NULL;
-#endif
-
-    //_created = hook();
 }
 
 #if THREAD_NAMING == ENABLE
@@ -57,7 +52,7 @@ Thread::Thread(Task task,
     _task = task;
     _paramToPass = paramToPass;
     _threadPriority = threadPriority;
-
+    _threadName = NULL;
     if (stackDepth < configMINIMAL_STACK_SIZE)
     {
         _stackDepth = configMINIMAL_STACK_SIZE;
@@ -82,6 +77,8 @@ Thread::Thread(const Thread &thread)
 
 #if THREAD_NAMING == ENABLE
     _threadName = thread._threadName;
+#else
+    _threadName = NULL;
 #endif
 
     _created = hook();
@@ -96,18 +93,21 @@ Thread::~Thread()
 
 bool Thread::hook()
 {
-#if THREAD_NAMING == ENABLE
-    _created = (xTaskCreate(_task, (const portCHAR *const)_threadName,
+#if configSUPPORT_DYNAMIC_ALLOCATION == 1
+    _created = (xTaskCreate(_task,
+                            (const portCHAR *const)_threadName,
                             _stackDepth,
                             _paramToPass,
                             _threadPriority,
                             &_threadHandler) == pdPASS);
 #else
-    _created = (xTaskCreate(_task, (const portCHAR *const)NULL,
-                            _stackDepth,
-                            _paramToPass,
-                            _threadPriority,
-                            &_threadHandler) == pdPASS);
+    _created = (xTaskCreateStatic(_task,
+                                  (const portCHAR *const)_threadName,
+                                  _stackDepth,
+                                  _paramToPass,
+                                  _threadPriority,
+                                  &_taskBuffer,
+                                  &_threadHandler) == pdPASS);
 #endif
     return _created;
 }
@@ -169,11 +169,11 @@ ThreadState Thread::getThreadState() const
 
 unsigned int Thread::stackDepth() const
 {
-	return _stackDepth;
+    return _stackDepth;
 }
 
 #ifdef SLEEP_
-static void Thread::sleep(unsigned long milliseconds)
+void Thread::sleep(unsigned long milliseconds)
 {
 #if INCLUDE_vTaskDelay == 1
     vTaskDelay((milliseconds * configTICK_RATE_HZ) / 1000L);
@@ -183,7 +183,7 @@ static void Thread::sleep(unsigned long milliseconds)
 }
 #endif
 
-static void Thread::yield()
+void Thread::yield()
 {
-	taskYIELD();
+    taskYIELD();
 }

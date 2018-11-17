@@ -27,7 +27,12 @@ enum ThreadPriority : unsigned char
 class Thread
 {
 private:
+#if configSUPPORT_DYNAMIC_ALLOCATION == 1
     TaskHandle_t _threadHandler;
+#else
+    StaticTask_t _threadHandler;
+    StackType_t _taskBuffer;
+#endif
     ThreadPriority _threadPriority;
     bool _created;
     Task _task;
