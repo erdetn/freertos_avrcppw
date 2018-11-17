@@ -66,6 +66,11 @@ static void receivingTask(u_object dataToPass)
         Serial.print(", c = ");
         Serial.println(data.c);
 
+		// Test suspend and resume all threads
+		Kernel::suspend();
+		Thread::sleep(250);
+		Kernel::resume();
+
         Thread::sleep(500);
     }
 }
