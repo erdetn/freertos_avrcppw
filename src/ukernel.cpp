@@ -6,17 +6,17 @@
 
 using namespace urtos;
 
-static void Kernel::run()
+void Kernel::run()
 {
     vTaskStartScheduler();
 }
 
-static void Kernel::kill()
+void Kernel::kill()
 {
     vTaskEndScheduler();
 }
 
-static u_byte Kernel::numberOfThreads()
+u_byte Kernel::numberOfThreads()
 {
     return (u_byte)xTaskGetSchedulerState();
 }
