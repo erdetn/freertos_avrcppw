@@ -30,13 +30,13 @@ static void sendingTask(u_object dataToPass)
 
     LOOP
     {
-		BEGIN_CRITICAL_REGION();
-		DISABLE_INTERRUPT();
+        BEGIN_CRITICAL_REGION()
+        DISABLE_INTERRUPT();
         data.a++;
         data.b++;
         data.c++;
-		END_CRITICAL_REGION();
-		ENABLE_INTERRUPT();
+        END_CRITICAL_REGION()
+        ENABLE_INTERRUPT();
 
         streamBuffer.write((const void *)&data, _len);
 

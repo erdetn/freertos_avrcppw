@@ -11,19 +11,27 @@
 #define UKERNEL_H
 
 #ifndef BEGIN_CRITICAL_REGION
-#define BEGIN_CRITICAL_REGION() taskENTER_CRITICAL()
+#define BEGIN_CRITICAL_REGION() \
+    taskENTER_CRITICAL();       \
+    {
 #endif
 
 #ifndef END_CRITICAL_REGION
-#define END_CRITICAL_REGION() taskEXIT_CRITICAL()
+#define END_CRITICAL_REGION() \
+    }                         \
+    taskEXIT_CRITICAL();
 #endif
 
 #ifndef BEGIN_INTERRUPT_CRITICAL_REGION
-#define BEGIN_INTERRUPT_CRITICAL_REGION() taskENTER_CRITICAL_FROM_ISR()
+#define BEGIN_INTERRUPT_CRITICAL_REGION() \
+    taskENTER_CRITICAL_FROM_ISR();        \
+    {
 #endif
 
 #ifndef END_INTERRUPT_CRITICAL_REGION
-#define END_INTERRUPT_CRITICAL_REGION() taskEXIT_CRITICAL_FROM_ISR(savedInterruptStatus)
+#define END_INTERRUPT_CRITICAL_REGION() \
+    }                                   \
+    taskEXIT_CRITICAL_FROM_ISR(savedInterruptStatus);
 #endif
 
 #ifndef ENABLE_INTERRUPT
@@ -41,6 +49,8 @@ class Kernel
 public:
     static void run();
     static void kill();
+    static void suspend();
+    static void resume();
 
     static u_byte numberOfThreads();
 };
