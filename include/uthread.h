@@ -76,7 +76,7 @@ public:
 #endif
 
 #if INCLUDE_vResumeFromISR == 1
-    signed char resumeFromISR();
+    signed char resumeFromInterrupt();
 #endif
 
 #if INCLUDE_vTaskPrioritySet == 1

@@ -141,7 +141,7 @@ void Thread::resume()
 #endif
 
 #if INCLUDE_vResumeFromISR == 1
-signed char Thread::resumeFromISR()
+signed char Thread::resumeFromInterrupt()
 {
     return (xTaskResumeFromISR(_threadHandler) == pdTRUE);
 }
