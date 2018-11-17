@@ -182,3 +182,8 @@ static void Thread::sleep(unsigned long milliseconds)
 #endif
 }
 #endif
+
+static void Thread::yield()
+{
+	taskYIELD();
+}

@@ -92,6 +92,9 @@ public:
 #define SLEEP_
     static void sleep(unsigned long milliseconds);
 #endif
+
+	static void yield();
+
 };
 } // namespace urtos
 #endif
