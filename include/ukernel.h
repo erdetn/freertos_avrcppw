@@ -10,6 +10,22 @@
 #ifndef UKERNEL_H
 #define UKERNEL_H
 
+#ifndef BEGIN_CRITICAL_REGION()
+#define BEGIN_CRITICAL_REGION() taskENTER_CRITICAL()
+#endif
+
+#ifndef END_CRITICAL_REGION()
+#define END_CRITICAL_REGION() taskEXIT_CRITICAL()
+#endif
+
+#ifndef BEGIN_INTERRUPT_CRITICAL_REGION()
+#define BEGIN_INTERRUPT_CRITICAL_REGION() taskENTER_CRITICAL_FROM_ISR()
+#endif
+
+#ifndef END_INTERRUPT_CRITICAL_REGION()
+#define END_INTERRUPT_CRITICAL_REGION() taskEXIT_CRITICAL_FROM_ISR(savedInterruptStatus)
+#endif
+
 namespace urtos
 {
 class Kernel

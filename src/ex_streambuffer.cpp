@@ -30,10 +30,12 @@ static void sendingTask(u_object dataToPass)
 
     LOOP
     {
+		BEGIN_CRITICAL_REGION();
         data.a++;
         data.b++;
         data.c++;
-
+		END_CRITICAL_REGION();
+		
         streamBuffer.write((const void *)&data, _len);
 
         Thread::sleep(1000);
