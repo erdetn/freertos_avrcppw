@@ -30,8 +30,8 @@ static void sendingTask(u_object dataToPass)
 
     LOOP
     {
-        BEGIN_CRITICAL_REGION()
         DISABLE_INTERRUPT();
+        BEGIN_CRITICAL_REGION()
         data.a++;
         data.b++;
         data.c++;
@@ -66,10 +66,10 @@ static void receivingTask(u_object dataToPass)
         Serial.print(", c = ");
         Serial.println(data.c);
 
-		// Test suspend and resume all threads
-		Kernel::suspend();
-		Thread::sleep(250);
-		Kernel::resume();
+        // Test suspend and resume all threads
+        Kernel::suspend();
+        Thread::sleep(250);
+        Kernel::resume();
 
         Thread::sleep(500);
     }
