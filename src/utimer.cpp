@@ -1,5 +1,7 @@
 #include "utimer.h"
 
+using namespace urtos;
+
 Timer::Timer()
 {
     _period = 0;

@@ -11,6 +11,7 @@ namespace urtos
 {
 
 typedef TimerCallbackFunction_t TimerCallback;
+typedef TimerHandle_t TimerHandler;
 
 class Timer
 {
@@ -25,7 +26,7 @@ private:
 
 public:
     Timer();
-    Timer(TimerCallback callback, u_long period, bool _autoReload);
+    Timer(TimerCallback callback, u_long period, bool autoReload);
     Timer(const Timer &timer);
 
     // functions
