@@ -9,6 +9,9 @@
 
 #include "urtos.h"
 
+#if !(configUSE_TIMERS == 1)
+#warning "Timer use is not configured"
+#else
 namespace urtos
 {
 
@@ -56,5 +59,5 @@ public:
 };
 
 } // namespace urtos
-
+#endif
 #endif
