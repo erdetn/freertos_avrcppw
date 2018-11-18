@@ -23,6 +23,7 @@ private:
 
 public:
     MessageBuffer(u_size bufferSize);
+	~MessageBuffer();
 
     u_size write(const void *data, u_size length);
     u_size write(const void *data, u_size length, unsigned long timeout);

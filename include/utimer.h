@@ -1,7 +1,7 @@
 /* Copyright (c) Erdet Nasufi, 2018 */
 
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef UTIMER_H
+#define UTIMER_H
 
 #include <Arduino_FreeRTOS.h>
 #include <timers.h>
@@ -33,6 +33,7 @@ public:
     Timer();
     Timer(TimerCallback callback, u_long period, bool autoReload);
     Timer(const Timer &timer);
+	~Timer();
 
     // functions
     void start();

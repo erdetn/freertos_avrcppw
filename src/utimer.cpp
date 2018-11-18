@@ -44,6 +44,11 @@ Timer::Timer(const Timer &timer)
 #endif
 }
 
+Timer::~Timer()
+{
+	xTimerDelete(_timer, pdMS_TO_TICKS(0));
+}
+
 // functions
 void Timer::start()
 {

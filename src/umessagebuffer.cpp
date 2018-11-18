@@ -16,6 +16,11 @@ MessageBuffer::MessageBuffer(u_size bufferSize) : _bufferSize(bufferSize)
 #endif
 }
 
+MessageBuffer::~MessageBuffer()
+{
+    vMessageBufferDelete(_sharedBuffer);
+}
+
 bool MessageBuffer::clear()
 {
     return (xMessageBufferReset(_sharedBuffer) == pdPASS);
