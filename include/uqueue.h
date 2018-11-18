@@ -1,6 +1,7 @@
-/*
- * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
- */
+/* Copyright (c) Erdet Nasufi, 2018 */
+
+#ifndef UQUEUE_H
+#define UQUEUE_H
 
 #include <Arduino_FreeRTOS.h>
 #include <queue.h>
@@ -10,9 +11,6 @@
 #if (configSUPPORT_DYNAMIC_ALLOCATION == 0)
 #error "Dynamic allocation is not configured."
 #else
-
-#ifndef UQUEUE_H
-#define UQUEUE_H
 
 namespace urtos
 {

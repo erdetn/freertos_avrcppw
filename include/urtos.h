@@ -1,13 +1,11 @@
-/*
- * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
- */
+/* Copyright (c) Erdet Nasufi, 2018 */
+
+#ifndef URTOS_H
+#define URTOS_H
 
 #include <Arduino_FreeRTOS.h>
 
 #include "utypes.h"
-
-#ifndef URTOS_H
-#define URTOS_H
 
 #define ENABLE 1
 #define DISABLE 0

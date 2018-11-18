@@ -1,3 +1,5 @@
+/* Copyright (c) Erdet Nasufi, 2018 */
+
 #ifndef TIMER_H
 #define TIMER_H
 

@@ -1,15 +1,13 @@
-/*
- * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
- */
+/* Copyright (c) Erdet Nasufi, 2018 */
+
+#ifndef UTHREAD_H
+#define UTHREAD_H
 
 #include <Arduino_FreeRTOS.h>
 #include <task.h>
 #include <string.h>
 
 #include "urtos.h"
-
-#ifndef UTHREAD_H
-#define UTHREAD_H
 
 #define THREAD_NAMING ENABLE
 

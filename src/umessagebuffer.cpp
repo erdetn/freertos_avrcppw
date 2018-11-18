@@ -1,3 +1,5 @@
+/* Copyright (c) Erdet Nasufi, 2018 */
+
 #include "umessagebuffer.h"
 
 using namespace urtos;

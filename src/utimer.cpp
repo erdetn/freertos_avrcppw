@@ -1,3 +1,5 @@
+/* Copyright (c) Erdet Nasufi, 2018 */
+
 #include "utimer.h"
 
 using namespace urtos;

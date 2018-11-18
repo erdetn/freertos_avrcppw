@@ -1,3 +1,5 @@
+/* Copyright (c) Erdet Nasufi, 2018 */
+
 #include "ustreambuffer.h"
 
 using namespace urtos;

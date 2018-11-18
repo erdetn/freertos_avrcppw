@@ -1,3 +1,5 @@
+/* Copyright (c) Erdet Nasufi, 2018 */
+
 #ifndef UTYPES_H
 #define UTYPES_H
 

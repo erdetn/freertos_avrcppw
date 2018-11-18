@@ -1,14 +1,12 @@
-/*
- * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
- */
+/* Copyright (c) Erdet Nasufi, 2018 */
+
+#ifndef UCOUNTINGSEMAPHORE_H
+#define UCOUNTINGSEMAPHORE_H
 
 #include <Arduino_FreeRTOS.h>
 #include <semphr.h>
 
 #include "urtos.h"
-
-#ifndef UCOUNTINGSEMAPHORE_H
-#define UCOUNTINGSEMAPHORE_H
 
 namespace urtos
 {

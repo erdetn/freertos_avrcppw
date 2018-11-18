@@ -1,14 +1,12 @@
-/*
- * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
- */
+/* Copyright (c) Erdet Nasufi, 2018 */
+
+#ifndef UMESSAGEBUFFER_H
+#define UMESSAGEBUFFER_H
 
 #include <Arduino_FreeRTOS.h>
 #include <message_buffer.h>
 
 #include "urtos.h"
-
-#ifndef UMESSAGEBUFFER_H
-#define UMESSAGEBUFFER_H
 
 namespace urtos
 {

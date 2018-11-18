@@ -1,14 +1,12 @@
-/*
- * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
- */
+/* Copyright (c) Erdet Nasufi, 2018 */
+
+#ifndef USTREAMBUFFER_H
+#define USTREAMBUFFER_H
 
 #include <Arduino_FreeRTOS.h>
 #include <stream_buffer.h>
 
 #include "urtos.h"
-
-#ifndef USTREAMBUFFER_H
-#define USTREAMBUFFER_H
 
 namespace urtos
 {

@@ -1,14 +1,12 @@
-/*
- * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
- */
+/* Copyright (c) Erdet Nasufi, 2018 */
+
+#ifndef UKERNEL_H
+#define UKERNEL_H
 
 #include <Arduino_FreeRTOS.h>
 #include <task.h>
 
 #include "urtos.h"
-
-#ifndef UKERNEL_H
-#define UKERNEL_H
 
 #ifndef BEGIN_CRITICAL_REGION
 #define BEGIN_CRITICAL_REGION() \

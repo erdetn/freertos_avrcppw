@@ -1,14 +1,12 @@
-/*
- * Author: Erdet Nasufi <erdet.nasufi@gmail.com>
- */
+/* Copyright (c) Erdet Nasufi, 2018 */
+
+#ifndef USEMAPHORE_H
+#define USEMAPHORE_H
 
 #include <Arduino_FreeRTOS.h>
 #include <semphr.h>
 
 #include "urtos.h"
-
-#ifndef USEMAPHORE_H
-#define USEMAPHORE_H
 
 namespace urtos
 {
