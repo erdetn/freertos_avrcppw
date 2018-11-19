@@ -18,6 +18,10 @@ private:
     bool _created = false;
     bool _locked = false;
 
+#if configSUPPORT_STATIC_ALLOCATION == 1
+    StaticSemaphore_t _staticSemaphore;
+#endif
+
 public:
     Mutex();
     Mutex(unsigned long waitToLock);

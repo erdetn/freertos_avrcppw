@@ -7,7 +7,12 @@ using namespace urtos;
 Mutex::Mutex()
 {
     _waitToLock = 0;
+
+#if configSUPPORT_DYNAMIC_ALLOCATION == 1
     _mutex = xSemaphoreCreateMutex();
+#else
+    _mutex = xSemaphoreCreateMutexStatic(&_staticSemaphore);
+#endif
 
     if (_mutex != NULL)
         _created = true;
@@ -27,6 +32,9 @@ Mutex::Mutex(const Mutex &mutex)
     _waitToLock = mutex._waitToLock;
     _mutex = mutex._mutex;
     _created = mutex._created;
+#if configSUPPORT_STATIC_ALLOCATION == 1
+    _staticSemaphore = mutex._staticSemaphore;
+#endif
 }
 
 unsigned long Mutex::waitToLock() const
@@ -41,7 +49,7 @@ void Mutex::lock()
 
 void Mutex::lock(unsigned long waitToLock)
 {
-    return (xSemaphoreTake(_mutex, pdMS_TO_TICKS(waitToLock)) == pdTRUE);
+    _locked = (xSemaphoreTake(_mutex, pdMS_TO_TICKS(waitToLock)) == pdTRUE);
 }
 
 void Mutex::unlock()

@@ -18,19 +18,15 @@ Queue queue(qCapacity, sizeof(int));
 
 static void sendingTask(u_object dataToPass)
 {
-    //int _array[] = {9, 1, 8, 2, 7, 3, 6, 4, 5};
-    //int i = 0;
+    int _array[] = {9, 1, 8, 2, 7, 3, 6, 4, 5};
+    int i = 0;
     LOOP
     {
-        // for (i = 0; i < 9; i++)
-        // {
-        //     queue.enqueue((const void *)&_array[i]);
-        //     Thread::sleep(250);
-        // }
-        digitalWrite(LED_PIN, HIGH);
-        Thread::sleep(500);
-        digitalWrite(LED_PIN, LOW);
-        Thread::sleep(500);
+        for (i = 0; i < 9; i++)
+        {
+            queue.enqueue((const void *)&_array[i]);
+            Thread::sleep(250);
+        }
     }
 }
 
@@ -48,7 +44,7 @@ static void receivingTask(u_object dataToPass)
     {
         while (queue.count() > 0)
         {
-            // queue.dequeue(&val);
+            queue.dequeue(&val);
             Serial.print("val = ");
             Serial.print(val);
             Serial.print(" [");
@@ -62,8 +58,8 @@ static void receivingTask(u_object dataToPass)
 
 void setup()
 {
-    sendingThread = Thread((ThreadCallback)sendingTask, "thread1", ThreadPriority::MEDIUM_PRIORITY, configMINIMAL_STACK_SIZE+128, NULL);
-    receivingThread = Thread((ThreadCallback)receivingTask, "thread2", ThreadPriority::HIGH_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
+    sendingThread = Thread((ThreadCallback)sendingTask, ThreadPriority::MEDIUM_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
+    receivingThread = Thread((ThreadCallback)receivingTask, ThreadPriority::HIGH_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
 
     Kernel::run();
 }

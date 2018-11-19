@@ -21,6 +21,7 @@ static void countingTask(void *dataToPass)
         count++;
         if (count == 100)
             count = 0;
+
         Thread::sleep(500);
         mutex.unlock();
     }
@@ -36,7 +37,7 @@ static void printingTask(void *dataToPass)
 
     LOOP
     {
-        mutex.lock(50); // wait 50ms before locking
+        mutex.lock(50);
         Serial.print("count: ");
         Serial.println(count);
         Thread::sleep(500);
@@ -46,8 +47,8 @@ static void printingTask(void *dataToPass)
 
 void setup()
 {
-    thread1 = Thread((Task)countingTask, "thread1", ThreadPriority::MEDIUM_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
-    thread2 = Thread((Task)printingTask, "thread2", ThreadPriority::HIGH_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
+    thread1 = Thread((ThreadCallback)countingTask, ThreadPriority::MEDIUM_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
+    thread2 = Thread((ThreadCallback)printingTask, ThreadPriority::HIGH_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
 
     Kernel::run();
 }

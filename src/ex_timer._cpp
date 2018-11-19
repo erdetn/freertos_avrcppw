@@ -11,6 +11,7 @@ bool ledState;
 const int ledPin = 13;
 
 Timer ledTimer;
+Timer serialTimer;
 
 static void toggleLed(TimerHandler sender)
 {
@@ -26,12 +27,20 @@ static void toggleLed(TimerHandler sender)
     }
 }
 
+static void serialWrite(TimerHandler sender)
+{
+	Serial.println("hello from timer.");
+}
+
 void setup()
 {
+	Serial.begin(9600);
     pinMode(ledPin, OUTPUT);
 
     ledTimer = Timer(toggleLed, 500, true);
+	serialTimer = Timer(serialWrite, 1000, true);
     ledTimer.start();
+	serialTimer.start();
 
     Kernel::run();
 }

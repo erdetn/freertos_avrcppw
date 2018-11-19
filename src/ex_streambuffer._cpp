@@ -75,8 +75,8 @@ static void receivingTask(u_object dataToPass)
 
 void setup()
 {
-    sendingThread = Thread((Task)sendingTask, "thread1", ThreadPriority::MEDIUM_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
-    receivingThread = Thread((Task)receivingTask, "thread2", ThreadPriority::HIGH_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
+    sendingThread = Thread((ThreadCallback)sendingTask, ThreadPriority::MEDIUM_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
+    receivingThread = Thread((ThreadCallback)receivingTask, ThreadPriority::HIGH_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
 
     Kernel::run();
 }

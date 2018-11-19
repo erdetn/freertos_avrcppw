@@ -51,19 +51,19 @@ u_size MessageBuffer::bufferSize() const
 
 u_size MessageBuffer::write(const void *data, u_size length)
 {
-    xMessageBufferSend(_sharedBuffer,
-                       data, length, pdMS_TO_TICKS(0));
+    return xMessageBufferSend(_sharedBuffer,
+                              data, length, pdMS_TO_TICKS(0));
 }
 
 u_size MessageBuffer::write(const void *data, u_size length, unsigned long timeout)
 {
-    xMessageBufferSend(_sharedBuffer,
-                       data, length, pdMS_TO_TICKS(timeout));
+    return xMessageBufferSend(_sharedBuffer,
+                              data, length, pdMS_TO_TICKS(timeout));
 }
 
 u_size MessageBuffer::writeFromInterrupt(const void *data, u_size length)
 {
-    xMessageBufferSendFromISR(_sharedBuffer, data, length, NULL);
+    return xMessageBufferSendFromISR(_sharedBuffer, data, length, NULL);
 }
 
 u_size MessageBuffer::read(void *data)

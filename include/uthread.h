@@ -5,11 +5,10 @@
 
 #include <Arduino_FreeRTOS.h>
 #include <task.h>
+#include <semphr.h>
 #include <string.h>
 
 #include "urtos.h"
-
-#define THREAD_NAMING ENABLE
 
 namespace urtos
 {
