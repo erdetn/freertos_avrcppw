@@ -14,6 +14,15 @@
 
 namespace urtos
 {
+
+enum EnqueueMode : unsigned char
+{
+	FromBack = 0,
+	FromFront,
+	Overwrite,
+	Default
+};
+
 class Queue
 {
 private:
@@ -23,36 +32,46 @@ private:
     const u_byte _capacity;
     const u_byte _unitSize;
 
+#if configSUPPORT_STATIC_ALLOCATION == 1
+	uint8_t *_buffer;
+    StaticQueue_t _static_Queue;
+#endif
+
 public:
     Queue(u_byte capacity, u_byte unitSize);
     Queue(u_byte capacity, u_byte unitSize,
           unsigned long sendTimeout,
           unsigned long receveTimeout);
+	~Queue();
 
-    bool enqueue(const void *data);
-    bool enqueue(const void *data, unsigned long sendTimeout);
-	bool enqueueFromInterrupt(const void *data);
+	bool enqueue(const void *data);
+    bool enqueue(const void *data, EnqueueMode mode);
+    bool enqueue(const void *data, EnqueueMode mode, unsigned long sendTimeout);
+    bool enqueueFromInterrupt(const void *data, EnqueueMode mode);
 
     bool dequeue(void *data);
     bool dequeue(void *data, unsigned long receiveTimeout);
-	bool dequeueFromInterrupt(void *data);
+    bool dequeueFromInterrupt(void *data);
 
     bool copy(void *data);
     bool copy(void *data, unsigned long copyTimeout);
-	bool copyFromInterrupt(void *data);
+    bool copyFromInterrupt(void *data);
 
-	void empty();
+	bool overwrite(const void *data);
+	bool overwriteFromInterrupt(const void *data);
 
-	u_byte count() const;
-	u_byte countFromInterrupt() const;
+    void empty();
 
-	u_byte available() const;
+    u_byte count() const;
+    u_byte countFromInterrupt() const;
+
+    u_byte available() const;
 
     u_byte capacity() const;
     u_byte unitSize() const;
 
-	bool isEmpty() const;
-	bool isFull() const;
+    bool isEmpty() const;
+    bool isFull() const;
 };
 } // namespace urtos
 

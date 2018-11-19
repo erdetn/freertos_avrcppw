@@ -9,6 +9,7 @@
 using namespace urtos;
 
 const int qCapacity = 10;
+const int LED_PIN = 13;
 
 int count = 0;
 Thread sendingThread;
@@ -17,21 +18,26 @@ Queue queue(qCapacity, sizeof(int));
 
 static void sendingTask(u_object dataToPass)
 {
-    int _array[] = {9, 1, 8, 2, 7, 3, 6, 4, 5};
-    int i = 0;
+    //int _array[] = {9, 1, 8, 2, 7, 3, 6, 4, 5};
+    //int i = 0;
     LOOP
     {
-        queue.enqueue((const void *)&_array[i]);
-        i++;
-        if (i == 9)
-            i = 0;
-        Thread::sleep(250);
+        // for (i = 0; i < 9; i++)
+        // {
+        //     queue.enqueue((const void *)&_array[i]);
+        //     Thread::sleep(250);
+        // }
+        digitalWrite(LED_PIN, HIGH);
+        Thread::sleep(500);
+        digitalWrite(LED_PIN, LOW);
+        Thread::sleep(500);
     }
 }
 
 static void receivingTask(u_object dataToPass)
 {
-    int val;
+    int val = 20;
+
     Serial.begin(9600);
     while (!Serial)
     {
@@ -42,21 +48,22 @@ static void receivingTask(u_object dataToPass)
     {
         while (queue.count() > 0)
         {
-            queue.dequeue(&val);
+            // queue.dequeue(&val);
             Serial.print("val = ");
             Serial.print(val);
             Serial.print(" [");
             Serial.print(queue.count());
             Serial.println("]");
         }
+
         Thread::sleep(750);
     }
 }
 
 void setup()
 {
-    sendingThread = Thread((Task)sendingTask, "thread1", ThreadPriority::MEDIUM_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
-    receivingThread = Thread((Task)receivingTask, "thread2", ThreadPriority::HIGH_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
+    sendingThread = Thread((ThreadCallback)sendingTask, "thread1", ThreadPriority::MEDIUM_PRIORITY, configMINIMAL_STACK_SIZE+128, NULL);
+    receivingThread = Thread((ThreadCallback)receivingTask, "thread2", ThreadPriority::HIGH_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
 
     Kernel::run();
 }

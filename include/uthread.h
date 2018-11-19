@@ -33,30 +33,18 @@ private:
 #endif
     ThreadPriority _threadPriority;
     bool _created;
-    Task _task;
-    unsigned portSHORT _stackDepth;
+    ThreadCallback _task;
+    unsigned int _stackDepth;
     void *_paramToPass;
 
     bool hook();
 
-#if THREAD_NAMING == ENABLE
-    portCHAR *_threadName;
-#endif
-
 public:
     Thread();
-#if THREAD_NAMING == ENABLE
-    Thread(Task task,
-           const portCHAR *threadName,
+    Thread(ThreadCallback task,
            ThreadPriority threadPriority,
-           unsigned portSHORT stackDepth,
+           unsigned int stackDepth,
            void *paramToPass);
-#else
-    Thread(Task task,
-           ThreadPriority threadPriority,
-           unsigned portSHORT stackDepth,
-           void *paramToPass);
-#endif
 
     Thread(const Thread &thread);
     ~Thread();

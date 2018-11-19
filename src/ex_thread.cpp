@@ -12,7 +12,7 @@ const int LED_PIN = 13;
 Thread thread1;
 Thread thread2;
 
-static void ledTask(void *dataToPass)
+void ledTask(void *dataToPass)
 {
     pinMode(LED_PIN, OUTPUT);
     LOOP
@@ -24,7 +24,7 @@ static void ledTask(void *dataToPass)
     }
 }
 
-static void redLedTask(void *dataToPass)
+void redLedTask(void *dataToPass)
 {
     Serial.begin(9600);
     while (!Serial)
@@ -43,8 +43,8 @@ static void redLedTask(void *dataToPass)
 
 void setup()
 {
-    thread1 = Thread((Task)ledTask, "thread1", ThreadPriority::MEDIUM_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
-    thread2 = Thread((Task)redLedTask, "thread2", ThreadPriority::HIGH_PRIORITY, configMINIMAL_STACK_SIZE + 128, NULL);
+    thread1 = Thread((ThreadCallback)ledTask, ThreadPriority::MEDIUM_PRIORITY, 128, NULL);
+    thread2 = Thread((ThreadCallback)redLedTask, ThreadPriority::HIGH_PRIORITY, 128, NULL);
 
     Kernel::run();
 }

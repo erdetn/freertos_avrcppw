@@ -18,6 +18,9 @@ MessageBuffer::MessageBuffer(u_size bufferSize) : _bufferSize(bufferSize)
 
 MessageBuffer::~MessageBuffer()
 {
+#if configSUPPORT_STATIC_ALLOCATION == 1
+    delete[] _buffer;
+#endif
     vMessageBufferDelete(_sharedBuffer);
 }
 

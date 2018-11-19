@@ -13,20 +13,14 @@ Thread::Thread()
     _threadPriority = ThreadPriority::MEDIUM_PRIORITY;
     _threadHandler = NULL;
     _paramToPass = NULL;
-    _threadName = NULL;
 }
 
-#if THREAD_NAMING == ENABLE
-Thread::Thread(Task task,
-               const portCHAR *threadName,
+Thread::Thread(ThreadCallback task,
                ThreadPriority threadPriority,
-               unsigned portSHORT stackDepth,
+               unsigned int stackDepth,
                void *paramToPass)
 {
     _task = task;
-    _threadName = new portCHAR[strlen(threadName) + 1];
-    strcpy(_threadName, threadName);
-    _threadName[strlen(threadName)] = 0;
     _paramToPass = paramToPass;
     _threadPriority = threadPriority;
 
@@ -41,28 +35,6 @@ Thread::Thread(Task task,
 
     _created = hook();
 }
-#else
-Thread::Thread(Task task,
-               ThreadPriority threadPriority,
-               unsigned portSHORT stackDepth,
-               void *paramToPass)
-{
-    _task = task;
-    _paramToPass = paramToPass;
-    _threadPriority = threadPriority;
-    _threadName = NULL;
-    if (stackDepth < configMINIMAL_STACK_SIZE)
-    {
-        _stackDepth = configMINIMAL_STACK_SIZE;
-    }
-    else
-    {
-        _stackDepth = stackDepth;
-    }
-
-    _created = hook();
-}
-#endif
 
 Thread::Thread(const Thread &thread)
 {
@@ -73,35 +45,25 @@ Thread::Thread(const Thread &thread)
     _stackDepth = thread._stackDepth;
     _paramToPass = thread._paramToPass;
 
-#if THREAD_NAMING == ENABLE
-    _threadName = thread._threadName;
-#else
-    _threadName = NULL;
-#endif
-
     _created = hook();
 }
 
 Thread::~Thread()
 {
-#if THREAD_NAMING == ENABLE
-    delete[] _threadName;
-#endif
-    vTaskDelete(_threadHandler);
 }
 
 bool Thread::hook()
 {
 #if configSUPPORT_DYNAMIC_ALLOCATION == 1
     _created = (xTaskCreate(_task,
-                            (const portCHAR *const)_threadName,
+                            (const portCHAR *const)NULL,
                             _stackDepth,
                             _paramToPass,
                             _threadPriority,
                             &_threadHandler) == pdPASS);
 #else
     _created = (xTaskCreateStatic(_task,
-                                  (const portCHAR *const)_threadName,
+                                  (const portCHAR *const)NULL,
                                   _stackDepth,
                                   _paramToPass,
                                   _threadPriority,
@@ -175,7 +137,7 @@ unsigned int Thread::stackDepth() const
 void Thread::sleep(unsigned long milliseconds)
 {
 #if INCLUDE_vTaskDelay == 1
-    vTaskDelay((milliseconds * configTICK_RATE_HZ) / 1000L);
+    vTaskDelay(pdMS_TO_TICKS(milliseconds)); // (milliseconds * configTICK_RATE_HZ) / 1000L);
 #else
 #error "No task delay configuration set."
 #endif

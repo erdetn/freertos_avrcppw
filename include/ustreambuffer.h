@@ -24,7 +24,8 @@ private:
 
 public:
     StreamBuffer(u_size bufferSize, u_size triggerLevel);
-
+	~StreamBuffer();
+	
     u_size write(const void *data, u_size length);
     u_size write(const void *data, u_size length, unsigned long timeout);
 

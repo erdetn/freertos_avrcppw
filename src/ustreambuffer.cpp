@@ -17,6 +17,14 @@ StreamBuffer::StreamBuffer(u_size bufferSize, size_t triggerLevel) : _bufferSize
 #endif
 }
 
+StreamBuffer::~StreamBuffer()
+{
+#if configSUPPORT_STATIC_ALLOCATION == 1
+    delete[] _buffer;
+#endif
+    vStreamBufferDelete(_streamBuffer);
+}
+
 u_size StreamBuffer::write(const void *data, u_size length)
 {
     return xStreamBufferSend(_streamBuffer, data, length, pdMS_TO_TICKS(0));
