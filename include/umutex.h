@@ -14,23 +14,25 @@ class Mutex
 {
 private:
     SemaphoreHandle_t _mutex = NULL;
-    unsigned long _waitToLock = 0;
+    unsigned long _waitToLock = false;
     bool _created = false;
     bool _locked = false;
+	
+	const bool _isRecursive = false;
+
+	bool createMutex();
 
 #if configSUPPORT_STATIC_ALLOCATION == 1
     StaticSemaphore_t _staticSemaphore;
 #endif
 
 public:
-    Mutex();
-    Mutex(unsigned long waitToLock);
+    Mutex(bool isRecursive, unsigned long waitToLock = 0);
     Mutex(const Mutex &mutex);
 
     unsigned long waitToLock() const;
 
-    void lock();
-    void lock(unsigned long waitToLock);
+    void lock(unsigned long waitToLock = 0);
     void unlock();
 
     void unlockFromInterrupt();
@@ -38,6 +40,7 @@ public:
 
     bool locked() const;
     bool created() const;
+	bool isRecursive() const;
 };
 } // namespace urtos
 #endif

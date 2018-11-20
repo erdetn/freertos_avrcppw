@@ -11,7 +11,7 @@ using namespace urtos;
 int count = 0;
 Thread thread1;
 Thread thread2;
-Mutex mutex;
+Mutex mutex(true);
 
 static void countingTask(void *dataToPass)
 {
@@ -37,7 +37,8 @@ static void printingTask(void *dataToPass)
 
     LOOP
     {
-        mutex.lock(50);
+        mutex.lock();
+        Serial.print(mutex.isRecursive());
         Serial.print("count: ");
         Serial.println(count);
         Thread::sleep(500);

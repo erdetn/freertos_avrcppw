@@ -4,27 +4,11 @@
 
 using namespace urtos;
 
-Mutex::Mutex()
-{
-    _waitToLock = 0;
-
-#if configSUPPORT_DYNAMIC_ALLOCATION == 1
-    _mutex = xSemaphoreCreateMutex();
-#else
-    _mutex = xSemaphoreCreateMutexStatic(&_staticSemaphore);
-#endif
-
-    if (_mutex != NULL)
-        _created = true;
-}
-
-Mutex::Mutex(unsigned long waitToLock)
+Mutex::Mutex(bool isRecursive, unsigned long waitToLock = 0) : _isRecursive(isRecursive)
 {
     _waitToLock = waitToLock;
-    _mutex = xSemaphoreCreateMutex();
 
-    if (_mutex != NULL)
-        _created = true;
+    _created = this->createMutex();
 }
 
 Mutex::Mutex(const Mutex &mutex)
@@ -37,33 +21,68 @@ Mutex::Mutex(const Mutex &mutex)
 #endif
 }
 
+bool Mutex::createMutex()
+{
+#if configSUPPORT_DYNAMIC_ALLOCATION == 1
+    if (_isRecursive)
+    {
+        _mutex = xSemaphoreCreateRecursiveMutex();
+    }
+    else
+    {
+        _mutex = xSemaphoreCreateMutex();
+    }
+#else
+    if (_isRecursive)
+    {
+        _mutex = xSemaphoreCreateRecursiveMutexStatic(&_staticSemaphore);
+    }
+    else
+    {
+        _mutex = xSemaphoreCreateMutexStatic(&_staticSemaphore);
+    }
+#endif
+
+    return (_mutex != NULL);
+}
+
 unsigned long Mutex::waitToLock() const
 {
     return _waitToLock;
 }
 
-void Mutex::lock()
+void Mutex::lock(unsigned long waitToLock = 0)
 {
-    _locked = (xSemaphoreTake(_mutex, pdMS_TO_TICKS(_waitToLock)) == pdTRUE);
-}
+    if (_isRecursive)
+    {
+        _locked = (xSemaphoreTakeRecursive(_mutex, pdMS_TO_TICKS(waitToLock)) == pdTRUE);
+        return;
+    }
 
-void Mutex::lock(unsigned long waitToLock)
-{
     _locked = (xSemaphoreTake(_mutex, pdMS_TO_TICKS(waitToLock)) == pdTRUE);
 }
 
 void Mutex::unlock()
 {
+    if (_isRecursive)
+    {
+        _locked = !(xSemaphoreGiveRecursive(_mutex) == pdTRUE);
+        return;
+    }
     _locked = !(xSemaphoreGive(_mutex) == pdTRUE);
 }
 
 void Mutex::unlockFromInterrupt()
 {
+    if (_isRecursive)
+        return;
     _locked = !(xSemaphoreGiveFromISR(_mutex, NULL) == pdTRUE);
 }
 
 void Mutex::lockFromInterrupt()
 {
+    if (_isRecursive)
+        return;
     _locked = (xSemaphoreTakeFromISR(_mutex, NULL) == pdTRUE);
 }
 
@@ -75,4 +94,9 @@ bool Mutex::created() const
 bool Mutex::locked() const
 {
     return _locked;
+}
+
+bool Mutex::isRecursive() const
+{
+    return _isRecursive;
 }
