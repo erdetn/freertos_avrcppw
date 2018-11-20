@@ -4,64 +4,60 @@
 
 using namespace urtos;
 
-Semaphore::Semaphore()
+Semaphore::Semaphore(u_byte maxSemaphores) : _max_semaphores(maxSemaphores)
 {
-  _blockTime = 0;
-  vSemaphoreCreateBinary(_semaphore);
+    _is_binary = (_max_semaphores == BINARY_SEMAPHORE);
 
-  if (_semaphore != NULL)
-    _isCreated = true;
+#if configSUPPORT_DYNAMIC_ALLOCATION == 1
+    if (_is_binary)
+    {
+        _semaphore = xSemaphoreCreateBinary();
+    }
+    else
+    {
+        _semaphore = xSemaphoreCreateCounting(_max_semaphores, 0);
+    }
+#else
+    if (_is_binary)
+    {
+        _semaphore = xSemaphoreCreateBinaryStatic(&_static_semaphore);
+    }
+    else
+    {
+        _semaphore = xSemaphoreCreateCountingStatic(&_static_semaphore);
+    }
+#endif
+
+    if (_semaphore != NULL)
+        _is_created = true;
 }
 
-Semaphore::Semaphore(unsigned long blockTime)
+bool Semaphore::wait(u_long blockTime = 0)
 {
-  _blockTime = blockTime;
-  vSemaphoreCreateBinary(_semaphore);
-
-  if (_semaphore != NULL)
-    _isCreated = true;
+    return (xSemaphoreTake(_semaphore, blockTime) == pdTRUE);
 }
 
-unsigned long Semaphore::getBlockTime() const
+bool Semaphore::waitFromInterrupt()
 {
-  return _blockTime;
+    return (xSemaphoreTakeFromISR(_semaphore, NULL) == pdTRUE);
 }
 
-bool Semaphore::take()
+bool Semaphore::post()
 {
-  return (xSemaphoreTake(_semaphore, pdMS_TO_TICKS(_blockTime)) == pdTRUE);
+    return (xSemaphoreGive(_semaphore) == pdTRUE);
 }
 
-bool Semaphore::take(unsigned long blockTime)
+bool Semaphore::postFromISR()
 {
-	return (xSemaphoreTake(_semaphore, pdMS_TO_TICKS(blockTime)) == pdTRUE );
-}
-
-bool Semaphore::give()
-{
-  return (xSemaphoreGive(_semaphore) == pdTRUE);
+    return (xSemaphoreGiveFromISR(_semaphore, NULL) == pdTRUE);
 }
 
 bool Semaphore::isCreated() const
 {
-  return _isCreated;
+    return _is_created;
 }
 
-bool Semaphore::giveFromISR(bool *isTaskUnblocked)
+u_byte Semaphore::maximumSemaphores() const
 {
-  portBASE_TYPE isTaskUnblocked_;
-  bool return_;
-
-  return_ = xSemaphoreGiveFromISR(_semaphore, &isTaskUnblocked_);
-
-  if(isTaskUnblocked_ == pdTRUE)
-  {
-    *(isTaskUnblocked) = true;
-  }
-  else
-  {
-    *(isTaskUnblocked) = false;
-  }
-
-  return (return_ == pdTRUE);
+    return (_max_semaphores);
 }

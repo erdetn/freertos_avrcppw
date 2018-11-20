@@ -1,12 +1,15 @@
 /* Copyright (c) Erdet Nasufi, 2018 */
 
-#ifndef USEMAPHORE_H
-#define USEMAPHORE_H
+#ifndef UCOUNTINGSEMAPHORE_H
+#define UCOUNTINGSEMAPHORE_H
 
 #include <Arduino_FreeRTOS.h>
 #include <semphr.h>
 
 #include "urtos.h"
+
+#define MAX_UBYTE 0xff
+#define BINARY_SEMAPHORE 1
 
 namespace urtos
 {
@@ -14,20 +17,26 @@ class Semaphore
 {
 private:
     SemaphoreHandle_t _semaphore = NULL;
-    unsigned long _blockTime = 0;
-    bool _isCreated = false;
+    u_long _block_time = 0;
+    bool _is_created = false;
+    u_byte _max_semaphores;
+	bool _is_binary;
+
+#if configSUPPORT_STATIC_ALLOCATION == 1
+	StaticSemaphore_t _static_semaphore;
+#endif
 
 public:
-    Semaphore();
-    Semaphore(unsigned long blockTime);
+    Semaphore(u_byte maxSemaphores);
 
-    unsigned long getBlockTime() const;
+    bool wait(u_long blockTime = 0);
+    bool waitFromInterrupt();
 
-    bool take();
-	bool take(unsigned long blockTime);
-    bool give();
+    bool post();
+    bool postFromISR();
+
     bool isCreated() const;
-    bool giveFromISR(bool *isTaskUnblocked);
+    u_byte maximumSemaphores() const;
 };
 } // namespace urtos
 

@@ -10,8 +10,8 @@
 #define u_ticks TickType_t
 
 typedef size_t u_size;
-typedef unsigned char u_byte;
 typedef unsigned long u_long;
+typedef unsigned char u_byte;
 
 #define u_object void*
 
