@@ -3,9 +3,8 @@
 #ifndef URTOS_H
 #define URTOS_H
 
-#include <Arduino_FreeRTOS.h>
-
 #include "utypes.h"
+#include <Arduino_FreeRTOS.h>
 
 #define ENABLE 1
 #define DISABLE 0

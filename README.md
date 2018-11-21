@@ -1,2 +1,4 @@
-# freertos_avrcppw
-A C++ wrapper for FreeRTOS of AVR.
+# urtos
+urtos - (micro)RTOS
+
+**urtos** is an intuitive and OOP C++ interface to C FreeRTOS library.
